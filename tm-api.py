@@ -117,7 +117,8 @@ j = 0
 h = 0
 m = 0
 for returned_value2 in returned_value.splitlines():
-	if(returned_value2 != 'No results for that time period'):
+	#print(f"RR {returned_value2}")
+	if(returned_value2.decode('utf-8') != 'No results for that time period'):
 		h = h + 1
 		parsed = json.loads(returned_value2)
 		for k,v in parsed.items():
