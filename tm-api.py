@@ -117,55 +117,56 @@ j = 0
 h = 0
 m = 0
 for returned_value2 in returned_value.splitlines():
-	h = h + 1
-	parsed = json.loads(returned_value2)
-	for k,v in parsed.items():
-		if(k == 'Attribute'):  #sha1 inside
-			for lv1_attr in v:
-				val_lv1_attr = lv1_attr.items()
-				is_sha1_0 = 0
-				is_sha256_0 = 0
-				for val_lv1_attr_k, val_lv1_attr_v in val_lv1_attr:
-					if(is_sha1_0 == 1 and val_lv1_attr_k == 'value'):
-						is_sha1_0 = 0
-						i = i + 1
-						print(f">> sha1 <-> {val_lv1_attr_v}")
-						submit_so_to_apex(val_lv1_attr_v, use_url_base, use_application_id, use_api_key)
-					if(val_lv1_attr_v == 'sha1' or val_lv1_attr_v == '|sha1'):
-						is_sha1_0 = 1
-					if(is_sha256_0 == 1 and val_lv1_attr_k == 'value'):
-						is_sha256_0 = 0
-						m = m + 1
-						print(f">> sha256 <-> {val_lv1_attr_v}")
-						submit_so_to_ds(val_lv1_attr_v, ds_url_base, ds_api_key)
-					if(val_lv1_attr_v == 'sha256' or val_lv1_attr_v == '|sha256'):
-						is_sha256_0 = 1
-		if(k == 'Object'):
-			for k3 in v:
-				val = k3.items()
-				for k4,v4 in val:
-					if(k4 == 'Attribute'): #sha1 inside
-						j = j + 1
-						v4_temp=json.dumps(v4)
-						v4_json = json.loads(v4_temp)
-						for k5 in v4:
-							is_sha1 = 0
-							is_sha256 = 0
-							for k6,v6 in k5.items():
-								if(is_sha1 == 1 and k6 == 'value'):
-									is_sha1 = 0
-									i = i + 1
-									print(f">> sha1 <-> {v6}")
-									submit_so_to_apex(v6, use_url_base, use_application_id, use_api_key)
-								if(v6 == 'sha1' or v6 == '|sha1'):
-									is_sha1 = 1
-								if(is_sha256 == 1 and k6 == 'value'):
-									is_sha256 = 0
-									m = m + 1
-									print(f">> sha256 <-> {v6}")
-									submit_so_to_ds(v6, ds_url_base, ds_api_key)
-								if(v6 == 'sha256' or v6 == '|sha256'):
-									is_sha256 = 1
+	if(returned_value2 != 'No results for that time period'):
+		h = h + 1
+		parsed = json.loads(returned_value2)
+		for k,v in parsed.items():
+			if(k == 'Attribute'):  #sha1 inside
+				for lv1_attr in v:
+					val_lv1_attr = lv1_attr.items()
+					is_sha1_0 = 0
+					is_sha256_0 = 0
+					for val_lv1_attr_k, val_lv1_attr_v in val_lv1_attr:
+						if(is_sha1_0 == 1 and val_lv1_attr_k == 'value'):
+							is_sha1_0 = 0
+							i = i + 1
+							print(f">> sha1 <-> {val_lv1_attr_v}")
+							submit_so_to_apex(val_lv1_attr_v, use_url_base, use_application_id, use_api_key)
+						if(val_lv1_attr_v == 'sha1' or val_lv1_attr_v == '|sha1'):
+							is_sha1_0 = 1
+						if(is_sha256_0 == 1 and val_lv1_attr_k == 'value'):
+							is_sha256_0 = 0
+							m = m + 1
+							print(f">> sha256 <-> {val_lv1_attr_v}")
+							submit_so_to_ds(val_lv1_attr_v, ds_url_base, ds_api_key)
+						if(val_lv1_attr_v == 'sha256' or val_lv1_attr_v == '|sha256'):
+							is_sha256_0 = 1
+			if(k == 'Object'):
+				for k3 in v:
+					val = k3.items()
+					for k4,v4 in val:
+						if(k4 == 'Attribute'): #sha1 inside
+							j = j + 1
+							v4_temp=json.dumps(v4)
+							v4_json = json.loads(v4_temp)
+							for k5 in v4:
+								is_sha1 = 0
+								is_sha256 = 0
+								for k6,v6 in k5.items():
+									if(is_sha1 == 1 and k6 == 'value'):
+										is_sha1 = 0
+										i = i + 1
+										print(f">> sha1 <-> {v6}")
+										submit_so_to_apex(v6, use_url_base, use_application_id, use_api_key)
+									if(v6 == 'sha1' or v6 == '|sha1'):
+										is_sha1 = 1
+									if(is_sha256 == 1 and k6 == 'value'):
+										is_sha256 = 0
+										m = m + 1
+										print(f">> sha256 <-> {v6}")
+										submit_so_to_ds(v6, ds_url_base, ds_api_key)
+									if(v6 == 'sha256' or v6 == '|sha256'):
+										is_sha256 = 1
 print(f"---- found sha1 = {i}, sha256 = {m}")
 
 print('-------- [ END RUN ] ------------\n')
