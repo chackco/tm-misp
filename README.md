@@ -29,6 +29,7 @@ In this script, It will work as integrator script to syncronize IOC
 - Click menu [Event Actions]>[Automation]> save text after "Your cuurent ket is" i.e. AAAAA
 - Run command at shell > pip3 install pymisp
 - > sudo pip3 install jwt
+- > sudo pip3 install PyJWT
 - > cd /var/www/MISP/PyMISP/examples
 - > cp keys.py.sample keys.py
 - > sudo chown www-data:www-data keys.py
