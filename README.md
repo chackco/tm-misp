@@ -7,6 +7,7 @@ We have many well known security vendors in the market which have created their 
 
 <p align="center">
 <img width="561" alt="Rest API for automation" src="https://github.com/chackco/tm-misp/raw/master/images/api.png">
+
 Figure 1: Rest API for Automation
 </p>
  
@@ -24,6 +25,7 @@ TM-MISP project was created to joint Trend Micro CTD with MISP platform which wi
 
 <p align="center">
 <img width="800" alt="Reference Architecture for this Project" src="https://github.com/chackco/tm-misp/raw/master/images/arch.png">
+
 Figure 2: Reference Architecture for this Project
 </p>
 
@@ -39,18 +41,22 @@ Figure 2: Reference Architecture for this Project
 - Click menu [Event Actions]>[Automation]> save text after "Your cuurent ket is" i.e. AAAAA
 
 ## Auto Installation Step
-- > curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | bash -s
-- > sudo vi keys.py
+ > curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | bash -s
+ > sudo vi keys.py
 - change: misp_url to your url i.e. 'https://192.168.0.100'
 - change: misp_key to your key i.e. 'AAAAA'
 - change: misp_verifycert = false
 - Sample
-- > misp_url = 'https://192.168.0.100'
-- > misp_key = 'AAAAA'
-- > misp_verifycert = false
+ > misp_url = 'https://192.168.0.100'
+ > misp_key = 'AAAAA'
+ > misp_verifycert = false
 - save file
 - Test connected
-- > python3 last.py -l 1h
+ > python3 last.py -l 1h
+- See if no error except unverified HTTPS request.... 
+- Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
+- Click "+Add"
+- Type Application name i.e. TM-MISP and Click "Save"
 
 ## Manual Installation Step
 
@@ -70,8 +76,8 @@ Figure 2: Reference Architecture for this Project
 - See if no error except unverified HTTPS request.... 
 - Upload file tm-api.py to path above
 - > sudo chown www-data:www-data tm-api.py
-- > sudo vi tm-api.py
 - Open Apex central > API key > create
+- > sudo vi tm-api.py
 - > edit use_url_base = https://Apex_central_ip
 - > edit use_application_id = Apex application id
 - > edit use_api_key = Apex api key
