@@ -43,6 +43,9 @@ Figure 2: Reference Architecture for this Project
 curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | sudo bash -s
 sudo vi keys.py
 ```
+
+- press **[i]** to start edit file
+
 - change: misp_url to your url i.e. **'https://192.168.0.100'**
 - change: misp_key to your key i.e. **'AAAAA'**
 - change: misp_verifycert = **false**
@@ -86,6 +89,8 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo vi tm-api.py
 ```
 
+- press **[i]** to start edit file
+
 >**NOTE**: 
 >if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
@@ -97,6 +102,7 @@ sudo vi tm-api.py
 - change: ds_url_base = **'https://dsm_ip:4119'**
 - change: ds_api_key = **'Deep security api key'**
 - Sample >>
+
 ```bash
 use_url_base = 'https://192.168.0.101'
 use_application_id = '7BB7B7E5-47BA-4073-B9AE-7AA7E00041D6'
@@ -124,6 +130,9 @@ cp keys.py.sample keys.py
 sudo chown www-data:www-data keys.py
 sudo vi keys.py
 ```
+
+- press **[i]** to start edit file
+
 - change: misp_url to your url i.e. **'https://192.168.0.100'**
 - change: misp_key to your key i.e. **'AAAAA'**
 - change: misp_verifycert = **false**
@@ -166,6 +175,9 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo chown www-data:www-data tm-api.py
 sudo vi tm-api.py
 ```
+
+- press **[i]** to start edit file
+
 >**NOTE**: 
 >if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
@@ -197,6 +209,9 @@ echo 'cd /var/www/MISP/PyMISP/examples' >> /home/misp/tm-api.sh
 echo 'python3 tm-api.py' >> /home/misp/tm-api.sh
 chmod +x /home/misp/tm-api.sh
 crontab -e
+```
+- press **[i]** to start edit file
+```bash
 0 * * * * /home/misp/tm-api.sh
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
