@@ -85,11 +85,15 @@ Figure 4: Create new Deep Security/Workload Security API Key
 ```bash
 sudo vi tm-api.py
 ```
-++ if you do not have apex central please let use_url_base as ''
+
+>[!NOTE]
+>if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
 - change: use_application_id = **'Apex application id'**
 - change: use_api_key = **'Apex api key'**
-++ if you do not have deep security please let ds_url_base as ''
+
+>[!NOTE]
+>if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = **'https://dsm_ip:4119'**
 - change: ds_api_key = **'Deep security api key'**
 - Sample >>
@@ -106,7 +110,7 @@ ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2
 ```bash
 python3 tm-api.py
 ```
-- If no error, please crontab tm-api.py every 1 hour
+- done!
 
 ## Manual Installation Step (skip this if you run auto)
 
@@ -162,13 +166,16 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo chown www-data:www-data tm-api.py
 sudo vi tm-api.py
 ```
-++ if you do not have apex central please let use_url_base as ''
-- change: use_url_base = 'https://Apex_central_ip'
-- change: use_application_id = 'Apex application id'
-- change: use_api_key = 'Apex api key'
-++ if you do not have deep security please let ds_url_base as ''
-- change: ds_url_base = 'https://dsm_ip:4119'
-- change: ds_api_key = 'Deep security api key'
+>[!NOTE]
+>if you do not have apex central please let use_url_base as ''
+- change: use_url_base = **'https://Apex_central_ip'**
+- change: use_application_id = **'Apex application id'**
+- change: use_api_key = **'Apex api key'**
+
+>[!NOTE]
+>if you do not have deep security please let ds_url_base as ''
+- change: ds_url_base = **'https://dsm_ip:4119'**
+- change: ds_api_key = **'Deep security api key'**
 - Sample >>
 ```bash
 use_url_base = 'https://192.168.0.101'
@@ -193,3 +200,4 @@ crontab -e
 0 * * * * /home/misp/tm-api.sh
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
+- done!
