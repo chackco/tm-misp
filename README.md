@@ -32,9 +32,9 @@ Figure 2: Reference Architecture for this Project
 - Download MISP VMDK (or other format) from https://www.circl.lu/misp-images/latest/
   i.e. Download file MISP_vX.X@YYYYY-VMware.zip
 - Extract zip file and run VMware workstation, boot up waiting IP address (DHCP) i.e. **192.168.0.100**
-- SSH to MISP using user/pass = misp/Password1234
+- SSH to MISP using user/pass = **misp/Password1234**
 - Open browser to https://IP_of_MISP  i.e. https://192.168.0.100
-- Login with admin@admin.test/admin
+- Login with **admin@admin.test/admin**
 - Change password
 - Click menu [**Event Actions**]>[**Automation**]> save text after "Your current key is" i.e. **AAAAA**
 
@@ -46,7 +46,7 @@ sudo vi keys.py
 - change: misp_url to your url i.e. **'https://192.168.0.100'**
 - change: misp_key to your key i.e. **'AAAAA'**
 - change: misp_verifycert = **false**
-- Sample
+- Sample >>
 ```bash
 misp_url = 'https://192.168.0.100'
 misp_key = 'AAAAA'
@@ -85,13 +85,13 @@ Figure 4: Create new Deep Security/Workload Security API Key
 ```bash
 sudo vi tm-api.py
 ```
-+ if you do not have apex central please let use_url_base as ''
+++ if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
 - change: use_application_id = **'Apex application id'**
 - change: use_api_key = **'Apex api key'**
-+ if you do not have deep security please let ds_url_base as ''
-- change: ds_url_base = 'https://dsm_ip:4119'
-- change: ds_api_key = 'Deep security api key'
+++ if you do not have deep security please let ds_url_base as ''
+- change: ds_url_base = **'https://dsm_ip:4119'**
+- change: ds_api_key = **'Deep security api key'**
 - Sample >>
 ```bash
 use_url_base = 'https://192.168.0.101'
@@ -102,7 +102,7 @@ ds_url_base = 'https://192.168.0.102:4119'
 ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
-- Run command at shell >
+- Run command at shell >>
 ```bash
 python3 tm-api.py
 ```
@@ -110,7 +110,7 @@ python3 tm-api.py
 
 ## Manual Installation Step (skip this if you run auto)
 
-- Run command at shell > 
+- Run command at shell >> 
 ```bash
 sudo pip3 install pymisp
 sudo pip3 install jwt
@@ -130,7 +130,7 @@ misp_key = 'AAAAA'
 misp_verifycert = false
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
-- Test connected 
+- Test connected >>
 ```bash
 python3 last.py -l 1h
 ```
@@ -162,11 +162,11 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo chown www-data:www-data tm-api.py
 sudo vi tm-api.py
 ```
-+ if you do not have apex central please let use_url_base as ''
+++ if you do not have apex central please let use_url_base as ''
 - change: use_url_base = 'https://Apex_central_ip'
 - change: use_application_id = 'Apex application id'
 - change: use_api_key = 'Apex api key'
-+ if you do not have deep security please let ds_url_base as ''
+++ if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = 'https://dsm_ip:4119'
 - change: ds_api_key = 'Deep security api key'
 - Sample >>
@@ -179,11 +179,11 @@ ds_url_base = 'https://192.168.0.102:4119'
 ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
-- Run command at shell >
+- Test Run command at shell >>
 ```bash
 python3 tm-api.py
 ```
-- If no error, please crontab tm-api.py every 1 hour
+- If no error, please create tm-api.sh and set crontab every 1 hour
 ```bash
 echo '#!/bin/bash' > /home/misp/tm-api.sh
 echo 'cd /var/www/MISP/PyMISP/examples' >> /home/misp/tm-api.sh

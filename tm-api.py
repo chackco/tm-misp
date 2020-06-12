@@ -2,7 +2,8 @@
 # Writen by nathaphon_k@trendmicro.com
 # Script will connected to MISP platform and gather sha1 and submit to Apex Central
 # then gather sha256 and submit to Deep Security
-# version 0.1 build 1 June 2020, 13:18 GMT+7
+# version 0.1 build 1 June 2020, 13:18 GMT+7 - initial
+# version 0.2 build 12 June 2020, 18:41 GMT+7 - add config option
 # required library https://github.com/MISP/PyMISP
 
 import subprocess
@@ -14,25 +15,26 @@ import time
 import json
 import urllib.parse
 import datetime
-import datetime
 
 #---------START CONFIG----------#
-# need to crontab, for example schedule every 1 hour 
-# 0 * * * * python3 tm-api.py
-cmd = "python3 ./last.py -l 1h"  # query MISP in time windows last 1 hour
+
+pymisp_cmd_time = "1h"  # query PyMISP in time windows last 1 hour
 
 # config for Apex Central integration
-use_url_base = 'https://172.16.1.164' 
-use_application_id = '7BB7B7E5-47BA-4073-B9AE-7DD7E05941D6'
-use_api_key = '6549019E-FBF2-428B-ABA6-3F423AD418C5'  
+use_url_base = 'https://8.8.8.8' 
+use_application_id = '7BB7B7E5-0000-4073-B9AE-7DD7E05941D6'
+use_api_key = '6549019E-FBF2-0000-ABA6-3F423AD418C5'  
+# Apex file_so action must be 'log' or 'block' or 'quarantine'
+use_action = 'log'
 
 # config for Deep Security
-ds_url_base = 'https://172.16.1.105:4119'
-ds_api_key = '2C0BF435-6EBA-2C4A-983B-4C2311F82DF3:nEaGaILarcAZLOrhMKkrX7SbfOuqtRkSIHC9wYlkY+I='
+# for Cloud One Workload security, ds_url_base = 'https://app.deepsecurity.trendmicro.com'
+ds_url_base = 'https://8.8.8.8:4119'
+ds_api_key = '2C0BF435-0000-1111-983B-4C2311F82DF3:nEaGaILarcAZLOrhMKkrX7SbfOuqtRkSIHC9wYlkY+I='
 
 #---------END CONFIG----------#
 
-ds_url_base = ds_url_base + '/api/applicationcontrolglobalrules'
+cmd = "python3 ./last.py -l " + pymisp_cmd_time 
 
 def create_checksum(http_method, raw_url, headers, request_body):
         string_to_hash = http_method.upper() + '|' + raw_url.lower() + '|' + headers + '|' + request_body
@@ -50,12 +52,16 @@ def create_jwt_token(appication_id, api_key, http_method, raw_url, headers, requ
          
 		 
 def submit_so_to_ds(sha256_so,url_ds, ds_key):
-	
+	if(url_ds == ''):
+		return 1
+
+	url_ds = url_ds + '/api/applicationcontrolglobalrules'
+
 	payload = {
 	  "applicationControlGlobalRules":[
 		{
 			"sha256":sha256_so,
-			"description":"from MISP"
+			"description":"UDSO from TM-MISP"
 		}
 		]
 	}
@@ -69,10 +75,11 @@ def submit_so_to_ds(sha256_so,url_ds, ds_key):
 	
 	return 0
 		 
-def submit_so_to_apex(sha1_so, url_so, appid, appkey):
+def submit_so_to_apex(sha1_so, url_so, appid, appkey, so_action):
 # Use this region to setup the call info of the Apex Central server (server url, application id, api key)
 # server info
-
+	if(url_so == ''):
+		return 1
 
 	productAgentAPIPath = '/WebApp/api/SuspiciousObjects/UserDefinedSO/'
 	canonicalRequestHeaders = ''
@@ -85,8 +92,8 @@ def submit_so_to_apex(sha1_so, url_so, appid, appkey):
         "param":{
             "type":"file_sha1",
             "content":val_so,
-            "notes":"from MISP",
-            "scan_action":"log",
+            "notes":"UDSO from TM-MISP",
+            "scan_action":so_action,
             "expiration_utc_date":val_date
         }
     }
@@ -133,7 +140,7 @@ for returned_value2 in returned_value.splitlines():
 							is_sha1_0 = 0
 							i = i + 1
 							print(f">> sha1 <-> {val_lv1_attr_v}")
-							submit_so_to_apex(val_lv1_attr_v, use_url_base, use_application_id, use_api_key)
+							submit_so_to_apex(val_lv1_attr_v, use_url_base, use_application_id, use_api_key, use_action)
 						if(val_lv1_attr_v == 'sha1' or val_lv1_attr_v == '|sha1'):
 							is_sha1_0 = 1
 						if(is_sha256_0 == 1 and val_lv1_attr_k == 'value'):
@@ -159,7 +166,7 @@ for returned_value2 in returned_value.splitlines():
 										is_sha1 = 0
 										i = i + 1
 										print(f">> sha1 <-> {v6}")
-										submit_so_to_apex(v6, use_url_base, use_application_id, use_api_key)
+										submit_so_to_apex(v6, use_url_base, use_application_id, use_api_key, use_action)
 									if(v6 == 'sha1' or v6 == '|sha1'):
 										is_sha1 = 1
 									if(is_sha256 == 1 and k6 == 'value'):
