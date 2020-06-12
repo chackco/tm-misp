@@ -91,13 +91,13 @@ sudo vi tm-api.py
 
 - press **[i]** in keyboard to start edit file
 
->**NOTE**: 
+> :warning: **NOTE**: 
 >if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
 - change: use_application_id = **'Apex application id'**
 - change: use_api_key = **'Apex api key'**
 
->**NOTE**: 
+> :warning: **NOTE**: 
 >if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = **'https://dsm_ip:4119'**
 - change: ds_api_key = **'Deep security api key'**
@@ -178,13 +178,13 @@ sudo vi tm-api.py
 
 - press **[i]** to start edit file
 
->**NOTE**: 
+> :warning: **NOTE**: 
 >if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
 - change: use_application_id = **'Apex application id'**
 - change: use_api_key = **'Apex api key'**
 
->**NOTE**: 
+> :warning: **NOTE**: 
 >if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = **'https://dsm_ip:4119'**
 - change: ds_api_key = **'Deep security api key'**
