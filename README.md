@@ -60,7 +60,28 @@ python3 last.py -l 1h
 - See if no error except unverified HTTPS request.... 
 - Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
 - Click "+Add"
+
+<p align="center">
+<img width="800" alt="Create new Apex Central API Key" src="https://github.com/chackco/tm-misp/raw/master/images/apex-central-new-api-key.png"><br>
+Figure 3: Create new Apex Central API Key
+</p>
+
 - Type Application name i.e. TM-MISP and Click "Save"
+- Copy (Application ID) and (API key) to notepad 
+- Open Deep Security Manager console > [Administration] > [User Management] > [API keys] 
+- Click "New..."
+
+<p align="center">
+<img width="800" alt="Create new Deep Security/Workload Security API Key" src="https://github.com/chackco/tm-misp/raw/master/images/deep-security-new-api-key.png"><br>
+Figure 4: Create new Deep Security/Workload Security API Key
+</p>
+
+- Type Name:
+- Select Role: Full Access (or role that have application control rulesets = Full)
+- Click "Next >"
+- Copy key in text box to notepad and click "Close"
+
+
 ```bash
 sudo vi tm-api.py
 ```
@@ -117,10 +138,22 @@ python3 last.py -l 1h
 - Upload file tm-api.py to path /var/www/MISP/PyMISP/examples
 - Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
 - Click "+Add"
+
+<p align="center">
+<img width="800" alt="Create new Apex Central API Key" src="https://github.com/chackco/tm-misp/raw/master/images/apex-central-new-api-key.png"><br>
+Figure 3: Create new Apex Central API Key
+</p>
+
 - Type Application name i.e. TM-MISP and Click "Save"
 - Copy (Application ID) and (API key) to notepad 
 - Open Deep Security Manager console > [Administration] > [User Management] > [API keys] 
 - Click "New..."
+
+<p align="center">
+<img width="800" alt="Create new Deep Security/Workload Security API Key" src="https://github.com/chackco/tm-misp/raw/master/images/deep-security-new-api-key.png"><br>
+Figure 4: Create new Deep Security/Workload Security API Key
+</p>
+
 - Type Name:
 - Select Role: Full Access (or role that have application control rulesets = Full)
 - Click "Next >"
