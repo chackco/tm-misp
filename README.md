@@ -52,7 +52,7 @@ misp_url = 'https://192.168.0.100'
 misp_key = 'AAAAA'
 misp_verifycert = false
 ```
-- press <ESC> and type :wq to save file
+- press [ESC] in keyboard and type :wq to save file
 - Test connected to MISP 
 ```bash
 python3 last.py -l 1h
@@ -80,7 +80,7 @@ use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
 ds_url_base = 'https://192.168.0.102:4119'
 ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
-- press <ESC> and type :wq to save file
+- press [ESC] in keyboard and type :wq to save file
 - Run command at shell >
 ```bash
 python3 tm-api.py
@@ -108,9 +108,11 @@ misp_url = 'https://192.168.0.100'
 misp_key = 'AAAAA'
 misp_verifycert = false
 ```
-- press <ESC> and type :wq to save file
+- press [ESC] in keyboard and type :wq to save file
 - Test connected 
-- > python3 last.py -l 1h
+```bash
+python3 last.py -l 1h
+```
 - See if no error except unverified HTTPS request.... 
 - Upload file tm-api.py to path /var/www/MISP/PyMISP/examples
 - Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
@@ -143,9 +145,18 @@ use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
 ds_url_base = 'https://192.168.0.102:4119'
 ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
-- press <ESC> and type :wq to save file
+- press [ESC] in keyboard and type :wq to save file
 - Run command at shell >
 ```bash
 python3 tm-api.py
 ```
 - If no error, please crontab tm-api.py every 1 hour
+```bash
+echo '#!/bin/bash' > /home/misp/tm-api.sh
+echo 'cd /var/www/MISP/PyMISP/examples' >> /home/misp/tm-api.sh
+echo 'python3 tm-api.py' >> /home/misp/tm-api.sh
+chmod +x /home/misp/tm-api.sh
+crontab -e
+0 * * * * "/home/misp/tm-api.sh"
+```
+- press [ESC] in keyboard and type :wq to save file

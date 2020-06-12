@@ -7,13 +7,17 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-echo Install required Python library
+echo "Install required Python library"
 pip3 install jwt
 pip3 install PyJWT
 cd /var/www/MISP/PyMISP/examples
 cp keys.py.sample keys.py
 chown www-data:www-data keys.py
-echo Download TM-MISP 
+echo "Download TM-MISP" 
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/tm-api.py --output /var/www/MISP/PyMISP/examples/tm-api.py
 chown www-data:www-data tm-api.py
-echo Finish, please edit config keys.py and tm-api.py
+echo '#!/bin/bash' > /home/misp/tm-api.sh
+echo 'cd /var/www/MISP/PyMISP/examples' >> /home/misp/tm-api.sh
+echo 'python3 tm-api.py' >> /home/misp/tm-api.sh
+chmod +x /home/misp/tm-api.sh
+echo "Finish, please edit config keys.py and tm-api.py"
