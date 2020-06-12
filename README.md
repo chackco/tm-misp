@@ -43,7 +43,7 @@ Figure 2: Reference Architecture for this Project
 curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | sudo bash -s
 sudo vi keys.py
 ```
-- change: <span style="color:red;">misp_url</span> to your url i.e. 'https://192.168.0.100'
+- change: <span style="color:red;">**misp_url**</span> to your url i.e. 'https://192.168.0.100'
 - change: misp_key to your key i.e. 'AAAAA'
 - change: misp_verifycert = false
 - Sample
