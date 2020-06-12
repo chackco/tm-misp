@@ -243,4 +243,8 @@ crontab -e
 /home/misp/tm-api.sh
 ```
 
+- verify in Apex Central web console main menu > [**Threat Intel**] > [**Custom Intelligence**]
+- See tab "**User-Defined Suspicious Object**"
+- You should see line that has source from TM-MISP
+- You can change action and expire date in Apex Central sub menu
 - done!
