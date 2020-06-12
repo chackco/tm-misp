@@ -61,32 +61,91 @@ python3 last.py -l 1h
 - Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
 - Click "+Add"
 - Type Application name i.e. TM-MISP and Click "Save"
+```bash
+sudo vi tm-api.py
+```
+** if you do not have apex central please let use_url_base as ''
+- change: use_url_base = 'https://Apex_central_ip'
+- change: use_application_id = 'Apex application id'
+- change: use_api_key = 'Apex api key'
+** if you do not have deep security please let ds_url_base as ''
+- change: ds_url_base = 'https://dsm_ip:4119'
+- change: ds_api_key = 'Deep security api key'
+- Sample >>
+```bash
+use_url_base = 'https://192.168.0.101'
+use_application_id = '7BB7B7E5-47BA-4073-B9AE-7AA7E00041D6'
+use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
 
-## Manual Installation Step
+ds_url_base = 'https://192.168.0.102:4119'
+ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
+```
+- press <ESC> and type :wq to save file
+- Run command at shell >
+```bash
+python3 tm-api.py
+```
+- If no error, please crontab tm-api.py every 1 hour
 
-- Run command at shell > pip3 install pymisp
-- > sudo pip3 install jwt
-- > sudo pip3 install PyJWT
-- > cd /var/www/MISP/PyMISP/examples
-- > cp keys.py.sample keys.py
-- > sudo chown www-data:www-data keys.py
-- > sudo vi keys.py
-- > edit misp_url to your url i.e. 'https://192.168.0.100'
-- > edit misp_key to your key i.e. 'AAAAA'
-- > edit misp_verifycert = false
-- > save file
+## Manual Installation Step (skip this if you run auto)
+
+- Run command at shell > 
+```bash
+sudo pip3 install pymisp
+sudo pip3 install jwt
+sudo pip3 install PyJWT
+cd /var/www/MISP/PyMISP/examples
+cp keys.py.sample keys.py
+sudo chown www-data:www-data keys.py
+sudo vi keys.py
+```
+- change: misp_url to your url i.e. 'https://192.168.0.100'
+- change: misp_key to your key i.e. 'AAAAA'
+- change: misp_verifycert = false
+- Sample >>
+```bash
+misp_url = 'https://192.168.0.100'
+misp_key = 'AAAAA'
+misp_verifycert = false
+```
+- press <ESC> and type :wq to save file
 - Test connected 
 - > python3 last.py -l 1h
 - See if no error except unverified HTTPS request.... 
-- Upload file tm-api.py to path above
-- > sudo chown www-data:www-data tm-api.py
-- Open Apex central > API key > create
-- > sudo vi tm-api.py
-- > edit use_url_base = https://Apex_central_ip
-- > edit use_application_id = Apex application id
-- > edit use_api_key = Apex api key
-- Open Deep Security Manager > ADmin > API key > create
-- > edit ds_url_base = https://dsm_ip:4119/api/applicationcontrolglobalrules
-- > edit ds_api_key = Deep security api key
-- > save file
-- Run command at shell > python3 tm-api.py
+- Upload file tm-api.py to path /var/www/MISP/PyMISP/examples
+- Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
+- Click "+Add"
+- Type Application name i.e. TM-MISP and Click "Save"
+- Copy (Application ID) and (API key) to notepad 
+- Open Deep Security Manager console > [Administration] > [User Management] > [API keys] 
+- Click "New..."
+- Type Name:
+- Select Role: Full Access (or role that have application control rulesets = Full)
+- Click "Next >"
+- Copy key in text box to notepad and click "Close"
+```bash
+sudo chown www-data:www-data tm-api.py
+sudo vi tm-api.py
+```
+** if you do not have apex central please let use_url_base as ''
+- change: use_url_base = 'https://Apex_central_ip'
+- change: use_application_id = 'Apex application id'
+- change: use_api_key = 'Apex api key'
+** if you do not have deep security please let ds_url_base as ''
+- change: ds_url_base = 'https://dsm_ip:4119'
+- change: ds_api_key = 'Deep security api key'
+- Sample >>
+```bash
+use_url_base = 'https://192.168.0.101'
+use_application_id = '7BB7B7E5-47BA-4073-B9AE-7AA7E00041D6'
+use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
+
+ds_url_base = 'https://192.168.0.102:4119'
+ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
+```
+- press <ESC> and type :wq to save file
+- Run command at shell >
+```bash
+python3 tm-api.py
+```
+- If no error, please crontab tm-api.py every 1 hour

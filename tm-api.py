@@ -27,11 +27,12 @@ use_application_id = '7BB7B7E5-47BA-4073-B9AE-7DD7E05941D6'
 use_api_key = '6549019E-FBF2-428B-ABA6-3F423AD418C5'  
 
 # config for Deep Security
-ds_url_base = 'https://172.16.1.105:4119/api/applicationcontrolglobalrules'
+ds_url_base = 'https://172.16.1.105:4119'
 ds_api_key = '2C0BF435-6EBA-2C4A-983B-4C2311F82DF3:nEaGaILarcAZLOrhMKkrX7SbfOuqtRkSIHC9wYlkY+I='
 
 #---------END CONFIG----------#
 
+ds_url_base = ds_url_base + '/api/applicationcontrolglobalrules'
 
 def create_checksum(http_method, raw_url, headers, request_body):
         string_to_hash = http_method.upper() + '|' + raw_url.lower() + '|' + headers + '|' + request_body
