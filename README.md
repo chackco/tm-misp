@@ -6,8 +6,7 @@ Nowadays, we are in the connected world, and the Threat landscape are evolving, 
 We have many well known security vendors in the market which have created their closed loop automation eco-system which work only for their products. In reality, customer will end up with many vendor in their environment for example, Firewall, Intrusion Prevention System, Email Gateway Security, Secure Web Gateway,  Security information and event management (SIEM), or Sandbox etc. The multi-vendor environment is very hard to managed. In the truth , there is no vendor that can guarantee that they will match every threat in the world. In this manner, customer will be need to add many effort for their day-to-day operation like check the Internet feed for new important IOC, then search for artifact in their network (i.e. IOC), add the user defined artifacts (i.e. IOC) in every security control points in their network to effectively block malicious one for their organization. Then, Tomorrow, they will need to redo everything again and again. 
 
 <p align="center">
-<img width="561" alt="Rest API for automation" src="https://github.com/chackco/tm-misp/raw/master/images/api.png">
-
+<img width="561" alt="Rest API for automation" src="https://github.com/chackco/tm-misp/raw/master/images/api.png"><br>
 Figure 1: Rest API for Automation
 </p>
  
@@ -24,8 +23,7 @@ TM-MISP project was created to joint Trend Micro CTD with MISP platform which wi
 - required library https://github.com/MISP/PyMISP
 
 <p align="center">
-<img width="800" alt="Reference Architecture for this Project" src="https://github.com/chackco/tm-misp/raw/master/images/arch.png">
-
+<img width="800" alt="Reference Architecture for this Project" src="https://github.com/chackco/tm-misp/raw/master/images/arch.png"><br>
 Figure 2: Reference Architecture for this Project
 </p>
 
@@ -41,8 +39,10 @@ Figure 2: Reference Architecture for this Project
 - Click menu [Event Actions]>[Automation]> save text after "Your cuurent ket is" i.e. AAAAA
 
 ## Auto Installation Step
- > curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | bash -s
- > sudo vi keys.py
+```bash
+curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | bash -s
+sudo vi keys.py
+```
 - change: misp_url to your url i.e. 'https://192.168.0.100'
 - change: misp_key to your key i.e. 'AAAAA'
 - change: misp_verifycert = false
