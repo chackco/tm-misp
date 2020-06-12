@@ -40,7 +40,7 @@ Figure 2: Reference Architecture for this Project
 
 ## Auto Installation Step
 ```bash
-curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | bash -s
+curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | sudo bash -s
 sudo vi keys.py
 ```
 - change: misp_url to your url i.e. 'https://192.168.0.100'
@@ -157,6 +157,6 @@ echo 'cd /var/www/MISP/PyMISP/examples' >> /home/misp/tm-api.sh
 echo 'python3 tm-api.py' >> /home/misp/tm-api.sh
 chmod +x /home/misp/tm-api.sh
 crontab -e
-0 * * * * "/home/misp/tm-api.sh"
+0 * * * * /home/misp/tm-api.sh
 ```
 - press [ESC] in keyboard and type :wq to save file
