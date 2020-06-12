@@ -47,12 +47,16 @@ sudo vi keys.py
 - change: misp_key to your key i.e. 'AAAAA'
 - change: misp_verifycert = false
 - Sample
- > misp_url = 'https://192.168.0.100'
- > misp_key = 'AAAAA'
- > misp_verifycert = false
-- save file
-- Test connected
- > python3 last.py -l 1h
+```bash
+misp_url = 'https://192.168.0.100'
+misp_key = 'AAAAA'
+misp_verifycert = false
+```
+- press <ESC> and type :wq to save file
+- Test connected to MISP 
+```bash
+python3 last.py -l 1h
+```
 - See if no error except unverified HTTPS request.... 
 - Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
 - Click "+Add"
