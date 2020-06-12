@@ -36,7 +36,7 @@ Figure 2: Reference Architecture for this Project
 - Open browser to https://IP_of_MISP  i.e. https://192.168.0.100
 - Login with **admin@admin.test/admin**
 - Change password
-- Click menu [**Event Actions**]>[**Automation**]> save text after "Your current key is" i.e. **AAAAA**
+- Click main menu [**Event Actions**]>[**Automation**]> save text after "Your current key is" i.e. **AAAAA**
 
 ## Auto Installation Step
 ```bash
@@ -61,7 +61,7 @@ misp_verifycert = false
 python3 last.py -l 1h
 ```
 - See if no error except unverified HTTPS request.... 
-- Open Apex central console menu > [**Administration**] > [**Settings**] > [**Automation API Access Settings**]
+- Open Apex central console main menu > [**Administration**] > [**Settings**] > [**Automation API Access Settings**]
 - Click "**+Add**"
 
 <p align="center">
@@ -71,7 +71,7 @@ Figure 3: Create new Apex Central API Key
 
 - Type Application name i.e. **TM-MISP** and Click "**Save**"
 - Copy (**Application ID**) and (**API key**) to notepad 
-- Open Deep Security Manager console > [**Administration**] > [**User Management**] > [**API keys**] 
+- Open Deep Security Manager console main menu > [**Administration**] > [**User Management**] > [**API keys**] 
 - Click "**New...**"
 
 <p align="center">
@@ -149,7 +149,7 @@ python3 last.py -l 1h
 ```
 - See if no error except unverified HTTPS request.... 
 - Upload file **tm-api.py** to path **/var/www/MISP/PyMISP/examples**
-- Open Apex central console menu > [**Administration**] > [**Settings**] > [**Automation API Access Settings**]
+- Open Apex central console main menu > [**Administration**] > [**Settings**] > [**Automation API Access Settings**]
 - Click "**+Add**"
 
 <p align="center">
@@ -159,7 +159,7 @@ Figure 3: Create new Apex Central API Key
 
 - Type Application name i.e. **TM-MISP** and Click "**Save**"
 - Copy (**Application ID**) and (**API key**) to notepad 
-- Open Deep Security Manager console > [**Administration**] > [**User Management**] > [**API keys**] 
+- Open Deep Security Manager console main menu > [**Administration**] > [**User Management**] > [**API keys**] 
 - Click "**New...**"
 
 <p align="center">
@@ -215,4 +215,32 @@ crontab -e
 0 * * * * /home/misp/tm-api.sh
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
+- done!
+
+## Post-Setup
+>Test Add UDSO to MISP 
+- Click main menu [**Event Actions**] > [**Add Events**]
+- Type in Event Info and click "**Submit**"
+
+>If you have SHA-1 hash to test add it to MISP web console
+- Click left menu [**Add Attribute**]  
+- Click (**choose one**) under **Category** change it to "**Payload delivery**"
+- Click Combobox under **Type** change it to "**sha1**"
+- Paste SHA-1 hash value of malware and click "**Submit**"
+
+>If you have SHA256 hash to test, add it to MISP web console
+- click left menu [**Add Attribute**]
+- Click (**choose one**) under **Category** change it to "**Payload delivery**"
+- Click Combobox under **Type** change it to "**sha256**"
+- Paste SHA256 hash value of malware and click "**Submit**"
+
+>You need to publish these hash before we can sync up to Trend Micro
+- Click left menu [**Publish Event**] 
+- Click on "**Yes**"
+- Run test to see result
+
+```bash
+/home/misp/tm-api.sh
+```
+
 - done!
