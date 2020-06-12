@@ -86,13 +86,13 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo vi tm-api.py
 ```
 
->[!NOTE]
+>**NOTE**: 
 >if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
 - change: use_application_id = **'Apex application id'**
 - change: use_api_key = **'Apex api key'**
 
->[!NOTE]
+>**NOTE**: 
 >if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = **'https://dsm_ip:4119'**
 - change: ds_api_key = **'Deep security api key'**
@@ -166,24 +166,24 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo chown www-data:www-data tm-api.py
 sudo vi tm-api.py
 ```
->[!NOTE]
+>**NOTE**: 
 >if you do not have apex central please let use_url_base as ''
 - change: use_url_base = **'https://Apex_central_ip'**
 - change: use_application_id = **'Apex application id'**
 - change: use_api_key = **'Apex api key'**
 
->[!NOTE]
+>**NOTE**: 
 >if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = **'https://dsm_ip:4119'**
 - change: ds_api_key = **'Deep security api key'**
 - Sample >>
 ```bash
 use_url_base = 'https://192.168.0.101'
-use_application_id = '7BB7B7E5-47BA-4073-B9AE-7AA7E00041D6'
-use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
+use_application_id = '7BB7B7E5-1111-0000-B9AE-7AA7E00041D6'
+use_api_key = '6549019E-0000-1111-ABA6-3E423AD111C5'
 
 ds_url_base = 'https://192.168.0.102:4119'
-ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
+ds_api_key = '5A0EED36-1BC8-0000-1111-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
 - press **[ESC]** in keyboard and type **:wq** to save file
 - Test Run command at shell >>
