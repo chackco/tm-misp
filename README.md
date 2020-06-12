@@ -44,7 +44,7 @@ curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | su
 sudo vi keys.py
 ```
 
-- press **[i]** to start edit file
+- press **[i]** in keyboard to start edit file
 
 - change: misp_url to your url i.e. **'https://192.168.0.100'**
 - change: misp_key to your key i.e. **'AAAAA'**
@@ -69,7 +69,7 @@ python3 last.py -l 1h
 Figure 3: Create new Apex Central API Key
 </p>
 
-- Type Application name i.e. TM-MISP and Click "**Save**"
+- Type Application name i.e. **TM-MISP** and Click "**Save**"
 - Copy (**Application ID**) and (**API key**) to notepad 
 - Open Deep Security Manager console > [**Administration**] > [**User Management**] > [**API keys**] 
 - Click "**New...**"
@@ -79,7 +79,7 @@ Figure 3: Create new Apex Central API Key
 Figure 4: Create new Deep Security/Workload Security API Key
 </p>
 
-- Type Name: **MISP**
+- Type Name: **TM-MISP**
 - Select Role: **Full Access** (or role that have application control rulesets = Full)
 - Click "**Next >**"
 - Copy key in text box to notepad and click "**Close**"
@@ -89,7 +89,7 @@ Figure 4: Create new Deep Security/Workload Security API Key
 sudo vi tm-api.py
 ```
 
-- press **[i]** to start edit file
+- press **[i]** in keyboard to start edit file
 
 >**NOTE**: 
 >if you do not have apex central please let use_url_base as ''
@@ -131,7 +131,7 @@ sudo chown www-data:www-data keys.py
 sudo vi keys.py
 ```
 
-- press **[i]** to start edit file
+- press **[i]** in keyboard to start edit file
 
 - change: misp_url to your url i.e. **'https://192.168.0.100'**
 - change: misp_key to your key i.e. **'AAAAA'**
@@ -167,7 +167,7 @@ Figure 3: Create new Apex Central API Key
 Figure 4: Create new Deep Security/Workload Security API Key
 </p>
 
-- Type Name: **MISP**
+- Type Name: **TM-MISP**
 - Select Role: **Full Access** (or role that have application control rulesets = Full)
 - Click "**Next >**"
 - Copy key in text box to notepad and click "**Close**"
@@ -210,7 +210,7 @@ echo 'python3 tm-api.py' >> /home/misp/tm-api.sh
 chmod +x /home/misp/tm-api.sh
 crontab -e
 ```
-- press **[i]** to start edit file
+- press **[i]** in keyboard to start edit file
 ```bash
 0 * * * * /home/misp/tm-api.sh
 ```
