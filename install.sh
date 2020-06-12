@@ -13,7 +13,7 @@ pip3 install PyJWT
 cd /var/www/MISP/PyMISP/examples
 cp keys.py.sample keys.py
 chown www-data:www-data keys.py
-echo "Download TM-MISP" 
+echo "Download and Install TM-MISP latest version" 
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/tm-api.py --output /var/www/MISP/PyMISP/examples/tm-api.py
 chown www-data:www-data tm-api.py
 echo '#!/bin/bash' > /home/misp/tm-api.sh

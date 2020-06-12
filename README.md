@@ -19,7 +19,7 @@ TM-MISP project was created to joint Trend Micro CTD with MISP platform which wi
 
 - Script will connected to MISP platform and gather SHA-1 and submit to Apex Central
 - Script will also gather SHA256 and submit to Deep Security Manager/Cloud One Workload Security
-- version 1.0 Start 1 June 2020, 13:18 GMT+7
+- Start at v0.1-alpha Start 1 June 2020, 13:18 GMT+7
 - required library https://github.com/MISP/PyMISP
 
 <p align="center">

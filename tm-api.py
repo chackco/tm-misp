@@ -2,7 +2,7 @@
 # Writen by nathaphon_k@trendmicro.com
 # Script will connected to MISP platform and gather sha1 and submit to Apex Central
 # then gather sha256 and submit to Deep Security
-# version 1.0 build 1 June 2020, 13:18 GMT+7
+# version 0.1 build 1 June 2020, 13:18 GMT+7
 # required library https://github.com/MISP/PyMISP
 
 import subprocess
