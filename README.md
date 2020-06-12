@@ -31,65 +31,65 @@ Figure 2: Reference Architecture for this Project
 - Testing with MISP v.24.126@150b66d VMDK edition
 - Download MISP VMDK (or other format) from https://www.circl.lu/misp-images/latest/
   i.e. Download file MISP_vX.X@YYYYY-VMware.zip
-- Extract zip file and run VMware workstation, boot up waiting IP address (DHCP) i.e. 192.168.0.100
+- Extract zip file and run VMware workstation, boot up waiting IP address (DHCP) i.e. **192.168.0.100**
 - SSH to MISP using user/pass = misp/Password1234
 - Open browser to https://IP_of_MISP  i.e. https://192.168.0.100
 - Login with admin@admin.test/admin
 - Change password
-- Click menu [Event Actions]>[Automation]> save text after "Your cuurent ket is" i.e. AAAAA
+- Click menu [**Event Actions**]>[**Automation**]> save text after "Your current key is" i.e. **AAAAA**
 
 ## Auto Installation Step
 ```bash
 curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | sudo bash -s
 sudo vi keys.py
 ```
-- change: <span style="color:red;">**misp_url**</span> to your url i.e. 'https://192.168.0.100'
-- change: misp_key to your key i.e. 'AAAAA'
-- change: misp_verifycert = false
+- change: misp_url to your url i.e. **'https://192.168.0.100'**
+- change: misp_key to your key i.e. **'AAAAA'**
+- change: misp_verifycert = **false**
 - Sample
 ```bash
 misp_url = 'https://192.168.0.100'
 misp_key = 'AAAAA'
 misp_verifycert = false
 ```
-- press [ESC] in keyboard and type :wq to save file
+- press **[ESC]** in keyboard and type **:wq** to save file
 - Test connected to MISP 
 ```bash
 python3 last.py -l 1h
 ```
 - See if no error except unverified HTTPS request.... 
-- Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
-- Click "+Add"
+- Open Apex central console menu > [**Administration**] > [**Settings**] > [**Automation API Access Settings**]
+- Click "**+Add**"
 
 <p align="center">
 <img width="800" alt="Create new Apex Central API Key" src="https://github.com/chackco/tm-misp/raw/master/images/apex-central-new-api-key.png"><br>
 Figure 3: Create new Apex Central API Key
 </p>
 
-- Type Application name i.e. TM-MISP and Click "Save"
-- Copy (Application ID) and (API key) to notepad 
-- Open Deep Security Manager console > [Administration] > [User Management] > [API keys] 
-- Click "New..."
+- Type Application name i.e. TM-MISP and Click "**Save**"
+- Copy (**Application ID**) and (**API key**) to notepad 
+- Open Deep Security Manager console > [**Administration**] > [**User Management**] > [**API keys**] 
+- Click "**New...**"
 
 <p align="center">
 <img width="800" alt="Create new Deep Security/Workload Security API Key" src="https://github.com/chackco/tm-misp/raw/master/images/deep-security-new-api-key.png"><br>
 Figure 4: Create new Deep Security/Workload Security API Key
 </p>
 
-- Type Name:
-- Select Role: Full Access (or role that have application control rulesets = Full)
-- Click "Next >"
-- Copy key in text box to notepad and click "Close"
+- Type Name: **MISP**
+- Select Role: **Full Access** (or role that have application control rulesets = Full)
+- Click "**Next >**"
+- Copy key in text box to notepad and click "**Close**"
 
 
 ```bash
 sudo vi tm-api.py
 ```
-** if you do not have apex central please let use_url_base as ''
-- change: use_url_base = 'https://Apex_central_ip'
-- change: use_application_id = 'Apex application id'
-- change: use_api_key = 'Apex api key'
-** if you do not have deep security please let ds_url_base as ''
++ if you do not have apex central please let use_url_base as ''
+- change: use_url_base = **'https://Apex_central_ip'**
+- change: use_application_id = **'Apex application id'**
+- change: use_api_key = **'Apex api key'**
++ if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = 'https://dsm_ip:4119'
 - change: ds_api_key = 'Deep security api key'
 - Sample >>
@@ -101,7 +101,7 @@ use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
 ds_url_base = 'https://192.168.0.102:4119'
 ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
-- press [ESC] in keyboard and type :wq to save file
+- press **[ESC]** in keyboard and type **:wq** to save file
 - Run command at shell >
 ```bash
 python3 tm-api.py
@@ -120,53 +120,53 @@ cp keys.py.sample keys.py
 sudo chown www-data:www-data keys.py
 sudo vi keys.py
 ```
-- change: misp_url to your url i.e. 'https://192.168.0.100'
-- change: misp_key to your key i.e. 'AAAAA'
-- change: misp_verifycert = false
+- change: misp_url to your url i.e. **'https://192.168.0.100'**
+- change: misp_key to your key i.e. **'AAAAA'**
+- change: misp_verifycert = **false**
 - Sample >>
 ```bash
 misp_url = 'https://192.168.0.100'
 misp_key = 'AAAAA'
 misp_verifycert = false
 ```
-- press [ESC] in keyboard and type :wq to save file
+- press **[ESC]** in keyboard and type **:wq** to save file
 - Test connected 
 ```bash
 python3 last.py -l 1h
 ```
 - See if no error except unverified HTTPS request.... 
-- Upload file tm-api.py to path /var/www/MISP/PyMISP/examples
-- Open Apex central console menu > [Administration] > [Settings] > [Automation API Access Settings]
-- Click "+Add"
+- Upload file **tm-api.py** to path **/var/www/MISP/PyMISP/examples**
+- Open Apex central console menu > [**Administration**] > [**Settings**] > [**Automation API Access Settings**]
+- Click "**+Add**"
 
 <p align="center">
 <img width="800" alt="Create new Apex Central API Key" src="https://github.com/chackco/tm-misp/raw/master/images/apex-central-new-api-key.png"><br>
 Figure 3: Create new Apex Central API Key
 </p>
 
-- Type Application name i.e. TM-MISP and Click "Save"
-- Copy (Application ID) and (API key) to notepad 
-- Open Deep Security Manager console > [Administration] > [User Management] > [API keys] 
-- Click "New..."
+- Type Application name i.e. **TM-MISP** and Click "**Save**"
+- Copy (**Application ID**) and (**API key**) to notepad 
+- Open Deep Security Manager console > [**Administration**] > [**User Management**] > [**API keys**] 
+- Click "**New...**"
 
 <p align="center">
 <img width="800" alt="Create new Deep Security/Workload Security API Key" src="https://github.com/chackco/tm-misp/raw/master/images/deep-security-new-api-key.png"><br>
 Figure 4: Create new Deep Security/Workload Security API Key
 </p>
 
-- Type Name:
-- Select Role: Full Access (or role that have application control rulesets = Full)
-- Click "Next >"
-- Copy key in text box to notepad and click "Close"
+- Type Name: **MISP**
+- Select Role: **Full Access** (or role that have application control rulesets = Full)
+- Click "**Next >**"
+- Copy key in text box to notepad and click "**Close**"
 ```bash
 sudo chown www-data:www-data tm-api.py
 sudo vi tm-api.py
 ```
-** if you do not have apex central please let use_url_base as ''
++ if you do not have apex central please let use_url_base as ''
 - change: use_url_base = 'https://Apex_central_ip'
 - change: use_application_id = 'Apex application id'
 - change: use_api_key = 'Apex api key'
-** if you do not have deep security please let ds_url_base as ''
++ if you do not have deep security please let ds_url_base as ''
 - change: ds_url_base = 'https://dsm_ip:4119'
 - change: ds_api_key = 'Deep security api key'
 - Sample >>
@@ -178,7 +178,7 @@ use_api_key = '6549019E-FBF2-428B-ABA6-3E423AD111C5'
 ds_url_base = 'https://192.168.0.102:4119'
 ds_api_key = '5A0EED36-1BC8-2FA1-2D36-40999DC59F02:F2488EFD-2671-0CC7-90F6-500D2E074ABA:fLStNjL5y7roKHlLH7STKz8GFLCgKhAygLyZJ3UopKo='
 ```
-- press [ESC] in keyboard and type :wq to save file
+- press **[ESC]** in keyboard and type **:wq** to save file
 - Run command at shell >
 ```bash
 python3 tm-api.py
@@ -192,4 +192,4 @@ chmod +x /home/misp/tm-api.sh
 crontab -e
 0 * * * * /home/misp/tm-api.sh
 ```
-- press [ESC] in keyboard and type :wq to save file
+- press **[ESC]** in keyboard and type **:wq** to save file
