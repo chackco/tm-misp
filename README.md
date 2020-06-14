@@ -41,6 +41,7 @@ Figure 2: Reference Architecture for this Project
 ## Auto Installation Step
 ```bash
 curl -L https://raw.githubusercontent.com/chackco/tm-misp/master/install.sh | sudo bash -s
+cd /var/www/MISP/PyMISP/examples
 sudo vi keys.py
 ```
 
