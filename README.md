@@ -27,13 +27,5 @@ TM-MISP project was created to joint Trend Micro CTD with MISP platform which wi
 Figure 2: Reference Architecture for this Project
 </p>
 
-## Pre-requisite
+## Install Guide
 See at wiki https://github.com/chackco/tm-misp/wiki
-
-## Automatic Install Guide
-See at wiki https://github.com/chackco/tm-misp/wiki/Automatic-Install-Guide
-
-## Manual Install Guide (skip this if you run auto)
-See at wiki https://github.com/chackco/tm-misp/wiki/Manual-Install-Guide
-
-
