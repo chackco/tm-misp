@@ -16,6 +16,8 @@ chown www-data:www-data keys.py
 echo "Download and Install TM-MISP latest version" 
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/tm-api.py --output /var/www/MISP/PyMISP/examples/tm-api.py
 chown www-data:www-data tm-api.py
+curl https://raw.githubusercontent.com/chackco/tm-misp/master/tmconfig.py --output /var/www/MISP/PyMISP/examples/tmconfig.py
+chown www-data:www-data tmconfig.py
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/list_apex_so.py --output /var/www/MISP/PyMISP/examples/list_apex_so.py
 chown www-data:www-data list_apex_so.py
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/list_ds_so.py --output /var/www/MISP/PyMISP/examples/list_ds_so.py
