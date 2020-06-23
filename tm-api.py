@@ -4,6 +4,7 @@
 # then gather sha256 and submit to Deep Security
 # version 0.1 build 1 June 2020, 13:18 GMT+7 - initial
 # version 0.2 build 12 June 2020, 18:41 GMT+7 - add config option
+# version 0.3 build 18 June 2020, 10:00 GMT+7 - change some option
 # required library https://github.com/MISP/PyMISP
 
 import subprocess
@@ -15,26 +16,9 @@ import time
 import json
 import urllib.parse
 import datetime
+from tmconfig import CONFIG
 
-#---------START CONFIG----------#
-
-pymisp_cmd_time = "1h"  # query PyMISP in time windows last 1 hour
-
-# config for Apex Central integration
-use_url_base = 'https://8.8.8.8' 
-use_application_id = '7BB7B7E5-0000-4073-B9AE-7DD7E05941D6'
-use_api_key = '6549019E-FBF2-0000-ABA6-3F423AD418C5'  
-# Apex file_so action must be 'log' or 'block' or 'quarantine'
-use_action = 'log'
-
-# config for Deep Security
-# for Cloud One Workload security, ds_url_base = 'https://app.deepsecurity.trendmicro.com'
-ds_url_base = 'https://8.8.8.8:4119'
-ds_api_key = '2C0BF435-0000-1111-983B-4C2311F82DF3:nEaGaILarcAZLOrhMKkrX7SbfOuqtRkSIHC9wYlkY+I='
-
-#---------END CONFIG----------#
-
-cmd = "python3 ./last.py -l " + pymisp_cmd_time 
+cmd = "python3 ./last.py -l " + CONFIG.pymisp_cmd_time 
 
 def create_checksum(http_method, raw_url, headers, request_body):
         string_to_hash = http_method.upper() + '|' + raw_url.lower() + '|' + headers + '|' + request_body
@@ -51,17 +35,19 @@ def create_jwt_token(appication_id, api_key, http_method, raw_url, headers, requ
     return token 
          
 		 
-def submit_so_to_ds(sha256_so,url_ds, ds_key):
+def submit_so_to_ds(sha256_so,url_ds, ds_key, s_sha1):
 	if(url_ds == ''):
 		return 1
 
 	url_ds = url_ds + '/api/applicationcontrolglobalrules'
-
+	s1 = ''
+	if(s_sha1 != ''):
+		s1 = ' - sha1=' + s_sha1
 	payload = {
 	  "applicationControlGlobalRules":[
 		{
 			"sha256":sha256_so,
-			"description":"UDSO from TM-MISP"
+			"description":"UDSO from TM-MISP" + s1
 		}
 		]
 	}
@@ -98,7 +84,7 @@ def submit_so_to_apex(sha1_so, url_so, appid, appkey, so_action):
         }
     }
 	useRequestBody = json.dumps(payload)  
-	print(f"payload = {useRequestBody}")
+	#print(f"payload = {useRequestBody}")
  
 	jwt_token = create_jwt_token(appid, appkey, 'PUT',
                                  productAgentAPIPath + useQueryString,
@@ -131,6 +117,7 @@ for returned_value2 in returned_value.splitlines():
 		parsed = json.loads(returned_value2)
 		for k,v in parsed.items():
 			if(k == 'Attribute'):  #sha1 inside
+				save_sha1_0 = ''
 				for lv1_attr in v:
 					val_lv1_attr = lv1_attr.items()
 					is_sha1_0 = 0
@@ -139,15 +126,19 @@ for returned_value2 in returned_value.splitlines():
 						if(is_sha1_0 == 1 and val_lv1_attr_k == 'value'):
 							is_sha1_0 = 0
 							i = i + 1
+							save_sha1_0 = val_lv1_attr_v
+							#print(f" {save_sha1_0}")
 							print(f">> sha1 <-> {val_lv1_attr_v}")
-							submit_so_to_apex(val_lv1_attr_v, use_url_base, use_application_id, use_api_key, use_action)
+							submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action)
 						if(val_lv1_attr_v == 'sha1' or val_lv1_attr_v == '|sha1'):
 							is_sha1_0 = 1
+							#save_sha1_0 = ''
 						if(is_sha256_0 == 1 and val_lv1_attr_k == 'value'):
 							is_sha256_0 = 0
 							m = m + 1
-							print(f">> sha256 <-> {val_lv1_attr_v}")
-							submit_so_to_ds(val_lv1_attr_v, ds_url_base, ds_api_key)
+							print(f">> sha256 <-> {val_lv1_attr_v}, {save_sha1_0}")
+							submit_so_to_ds(val_lv1_attr_v, CONFIG.ds_url_base, CONFIG.ds_api_key,save_sha1_0)
+							save_sha1_0 = ''
 						if(val_lv1_attr_v == 'sha256' or val_lv1_attr_v == '|sha256'):
 							is_sha256_0 = 1
 			if(k == 'Object'):
@@ -158,6 +149,7 @@ for returned_value2 in returned_value.splitlines():
 							j = j + 1
 							v4_temp=json.dumps(v4)
 							v4_json = json.loads(v4_temp)
+							save_sha1 = ''
 							for k5 in v4:
 								is_sha1 = 0
 								is_sha256 = 0
@@ -166,14 +158,17 @@ for returned_value2 in returned_value.splitlines():
 										is_sha1 = 0
 										i = i + 1
 										print(f">> sha1 <-> {v6}")
-										submit_so_to_apex(v6, use_url_base, use_application_id, use_api_key, use_action)
+										save_sha1 = v6
+										submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action)
 									if(v6 == 'sha1' or v6 == '|sha1'):
 										is_sha1 = 1
+										#save_sha1 = ''
 									if(is_sha256 == 1 and k6 == 'value'):
 										is_sha256 = 0
 										m = m + 1
-										print(f">> sha256 <-> {v6}")
-										submit_so_to_ds(v6, ds_url_base, ds_api_key)
+										print(f">> sha256 <-> {v6}, {save_sha1}")
+										submit_so_to_ds(v6, CONFIG.ds_url_base, CONFIG.ds_api_key, save_sha1)
+										save_sha1=''
 									if(v6 == 'sha256' or v6 == '|sha256'):
 										is_sha256 = 1
 print(f"---- found sha1 = {i}, sha256 = {m}")
