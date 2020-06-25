@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Writen by nathaphon_k@trendmicro.com
+# Writen by nathaphon_k
 # Script will connected to MISP platform and gather sha1 and submit to Apex Central
 # then gather sha256 and submit to Deep Security
 # version 0.1 build 1 June 2020, 13:18 GMT+7 - initial
