@@ -45,4 +45,4 @@ echo "0 * * * * /home/misp/tm-api.sh" >> tmp_mycron
 #install new cron file
 crontab tmp_mycron
 rm tmp_mycron
-echo "Finish, please edit config keys.py and tm-api.py"
+echo "Finish, please edit config keys.py, tmconfig.php and tmconfig.py"

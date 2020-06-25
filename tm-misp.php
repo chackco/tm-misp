@@ -36,12 +36,12 @@ $context = stream_context_create($opts);
 		$tmp2=explode("last_modification_date",$tmp[1]);
 		//vt has 2 format
 		//format 1: tmp2[0] has file name
-		print("<table width=100% style='background: none'><tr><td>");
+		print("<table width=250 style='background: none'><tr><td>");
 		if(preg_match("/meaningful_name/",$tmp2[0])){
 			$tmp3=explode("meaningful_name",$tmp2[0]);
 			$tmp4=explode(",",$tmp3[1]);
 			$meaningful_name=substr($tmp4[0],4,-1);
-			print($meaningful_name."</td><td width=80 nowrap>");
+			print($meaningful_name."</td><td width=120 nowrap>");
 			$tmp5=explode("last_submission_date",$tmp[1]);
 			$reult_line=explode("\n",$tmp5[0]);
 		
@@ -50,7 +50,7 @@ $context = stream_context_create($opts);
 		$name_line=explode("\n",$tmp2[1]);
 		for($i=1;$i<count($name_line)-1;$i++){
 			if(preg_match("/meaningful_name/",$name_line[$i])){
-			print("".substr($name_line[$i],32,-2)."</td><td width=80 nowrap>");
+			print("".substr($name_line[$i],32,-2)."</td><td width=120 nowrap>");
 			}
 		}
 		//tmp2[0] result
