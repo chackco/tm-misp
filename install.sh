@@ -28,6 +28,8 @@ curl https://raw.githubusercontent.com/chackco/tm-misp/master/main.css --output 
 chown www-data:www-data /var/www/MISP/app/webroot/main.css
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/OpenSans-Regular.ttf --output /var/www/MISP/app/webroot/OpenSans-Regular.ttf
 chown www-data:www-data /var/www/MISP/app/webroot/OpenSans-Regular.ttf
+curl https://raw.githubusercontent.com/chackco/tm-misp/master/tmconfig.php --output /var/www/MISP/app/webroot/tmconfig.php
+chown www-data:www-data /var/www/MISP/app/webroot/tmconfig.php
 touch /var/www/MISP/PyMISP/examples/list_apex_so.txt
 touch /var/www/MISP/PyMISP/examples/list_ds_so.txt
 echo '#!/bin/bash' > /home/misp/tm-api.sh
