@@ -3,29 +3,73 @@
 # TM-MISP web UI script for display IOC from Apex central and DSM
 #
 
-if(isset($_GET['url']) && (preg_match("/^([a-f0-9]{64})$/", strtolower($_GET['url'])) || preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['url'])))){
-	$vt_link="https://www.virustotal.com/ui/files/".$_GET['url'];
-	$vt_result=file_get_contents($vt_link);
 
-	if(preg_match("/Invalid file hash/",$vt_result)){
+if(isset($_GET['url']) && (preg_match("/^([a-f0-9]{64})$/", strtolower($_GET['url'])) || preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['url'])))){
+include_once("./tmconfig.php");
+	
+	$opts = [
+    "http" => [
+        "method" => "GET",
+        "header" => "Accept-language: en\r\n" .
+            "x-apikey: $vt_api_key\r\n"
+    ]
+];
+
+$context = stream_context_create($opts);
+	$vt_link="https://www.virustotal.com/api/v3/files/".$_GET['url'];
+	
+	
+	$vt_result=@file_get_contents($vt_link,false, $context);
+	if($vt_result === false){
+	$error = error_get_last();
+    $error = explode(': ', $error['message']);
+    $error = trim($error[2]);
+	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	exit;
+	}
+	if(preg_match("/error/",$vt_result)){
+	print("error");
+	}elseif(preg_match("/Invalid file hash/",$vt_result)){
 	print("NO VT");
 	}else{
 		$tmp=explode("last_analysis_stats",$vt_result);
 		$tmp2=explode("last_modification_date",$tmp[1]);
-		$line=explode("\n",$tmp2[0]);
-		for($i=1;$i<count($line)-1;$i++){
-			if(preg_match("/malicious/",$line[$i])){
-			print ($line[$i]."");
-			}
-			if(preg_match("/suspicious/",$line[$i])){
-			print ($line[$i]."");
-			}
-			if(preg_match("/undetected/",$line[$i])){
-			print ($line[$i]."");
+		//vt has 2 format
+		//format 1: tmp2[0] has file name
+		print("<table width=100% style='background: none'><tr><td>");
+		if(preg_match("/meaningful_name/",$tmp2[0])){
+			$tmp3=explode("meaningful_name",$tmp2[0]);
+			$tmp4=explode(",",$tmp3[1]);
+			$meaningful_name=substr($tmp4[0],4,-1);
+			print($meaningful_name."</td><td width=80 nowrap>");
+			$tmp5=explode("last_submission_date",$tmp[1]);
+			$reult_line=explode("\n",$tmp5[0]);
+		
+		}else{
+		//format 2: tmp2[1] has file name
+		$name_line=explode("\n",$tmp2[1]);
+		for($i=1;$i<count($name_line)-1;$i++){
+			if(preg_match("/meaningful_name/",$name_line[$i])){
+			print("".substr($name_line[$i],32,-2)."</td><td width=80 nowrap>");
 			}
 		}
-#	print($line);	
+		//tmp2[0] result
+		$reult_line=explode("\n",$tmp2[0]);
+		}
+		for($i=1;$i<count($reult_line)-1;$i++){
+			if(preg_match("/malicious/",$reult_line[$i])){
+			print (substr($reult_line[$i],0,-1)."<br>");
+			}
+			if(preg_match("/suspicious/",$reult_line[$i])){
+			print (substr($reult_line[$i],0,-1)."<br>");
+			}
+			if(preg_match("/undetected/",$reult_line[$i])){
+			print ($reult_line[$i]);
+			}
+		}
 		
+	print("</td></tr></table>");	
+	
 	}
 	exit;
 	
@@ -75,7 +119,7 @@ xmlhttp.onreadystatechange=function()
 	
     }
   }
-xmlhttp.open('GET','tm-misp.php?url='+url_1,true);
+xmlhttp.open('GET','tm-misp.php?url='+url_1+'&div='+myDiv,true);
 xmlhttp.send();
 }
 </script>
@@ -136,7 +180,7 @@ $return_all_rule=$return_all_ds;
 					}
 					$vt_link=$name_print;
 
-					print("<tr><td class=column1>$k.</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column6 nowrap><div id=myDiv$k><script>loadVT('$vt_link','myDiv$k')</script></div></td></tr>");
+					print("<tr><td class=column1>$k.</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column6 nowrap><div id=myDiv$k><a href='#' onclick=loadVT('$vt_link','myDiv$k')>View VT</a></div></td></tr>");
 				}
 			}
 		}	
@@ -150,7 +194,7 @@ $return_all_rule=$return_all_ds;
 	
 	for($w=0;$w<count($a);$w++){
 		
-		print("<tr><td class=column1>$k.</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column6 nowrap><div id=myDiv".($k+$w)."><script>loadVT('$a[$w]','myDiv".($k+$w)."')</script></div></td></tr>");
+		print("<tr><td class=column1>$k.</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column6 nowrap><div id=myDiv".($k+$w)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
 	}
 
 	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column6>Total: ".($k+$t)."</td></tr>");
