@@ -10,6 +10,7 @@ fi
 echo "Install required Python library"
 pip3 install jwt
 pip3 install PyJWT
+pip3 install pymisp
 cd /var/www/MISP/PyMISP/examples
 cp keys.py.sample keys.py
 chown www-data:www-data keys.py
