@@ -99,7 +99,7 @@ $return_all_ds = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/li
 			<div class=wrap-table100>
 				<div class=table100>
 	<table><thead>
-	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1</th><th class=column4>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>
+	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column4>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>
 	<script type='text/javascript'>
 function loadVT(url_1,myDiv)
 {

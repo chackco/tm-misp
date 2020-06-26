@@ -35,7 +35,7 @@ canonicalRequestHeaders = ''
 
 useRequestBody = ''
 
-useQueryString="?type=file_sha1"
+useQueryString=""
 jwt_token = create_jwt_token(CONFIG.use_application_id, CONFIG.use_api_key, 'GET',
                               productAgentAPIPath + useQueryString,
                               canonicalRequestHeaders, useRequestBody, iat=time.time())

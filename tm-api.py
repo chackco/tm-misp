@@ -5,7 +5,7 @@
 # version 0.1 build 1 June 2020, 13:18 GMT+7 - initial
 # version 0.2 build 12 June 2020, 18:41 GMT+7 - add config option
 # version 0.3 build 18 June 2020, 10:00 GMT+7 - change some option
-# version 0.4 build 26 June 2020, 18:19 GMT+7 - add url, domain so support
+# version 0.4 build 26 June 2020, 18:19 GMT+7 - add url, domain,ip so support
 # required library https://github.com/MISP/PyMISP
 
 import subprocess
@@ -67,7 +67,7 @@ def submit_so_to_apex(sha1_so, url_so, appid, appkey, so_action, so_type):
 # server info
 	if(url_so == ''):
 		return 1
-# so_type = file_sha1 , url, domain
+# so_type = file_sha1 , url, domain, ip
 	productAgentAPIPath = '/WebApp/api/SuspiciousObjects/UserDefinedSO/'
 	canonicalRequestHeaders = ''
 
@@ -111,6 +111,7 @@ count_sha1 = 0
 j = 0
 count_url = 0
 count_domain = 0
+count_ip = 0
 h = 0
 count_sha256 = 0
 for returned_value2 in returned_value.splitlines():
@@ -125,9 +126,18 @@ for returned_value2 in returned_value.splitlines():
 					val_lv1_attr = lv1_attr.items()
 					is_sha1_0 = 0
 					is_url_0 = 0
+					is_ip_0 = 0
 					is_domain_0 = 0
 					is_sha256_0 = 0
 					for val_lv1_attr_k, val_lv1_attr_v in val_lv1_attr:
+						if(is_ip_0 == 1 and val_lv1_attr_k == 'value'):
+							is_ip_0 = 0
+							count_ip = count_ip + 1
+							#print(f" {save_sha1_0}")
+							print(f">> ip <-> {val_lv1_attr_v}")
+							submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'ip')
+						if(val_lv1_attr_v == 'ip-src'):
+							is_ip_0 = 1
 						if(is_domain_0 == 1 and val_lv1_attr_k == 'value'):
 							is_domain_0 = 0
 							count_domain = count_domain + 1
@@ -174,9 +184,17 @@ for returned_value2 in returned_value.splitlines():
 							for k5 in v4:
 								is_sha1 = 0
 								is_url = 0
+								is_ip = 0
 								is_domain = 0
 								is_sha256 = 0
 								for k6,v6 in k5.items():
+									if(is_ip == 1 and k6 == 'value'):
+										is_ip = 0
+										count_ip = count_ip + 1
+										print(f">> ip <-> {v6}")
+										submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'ip')
+									if(v6 == 'ip-src'):
+										is_ip = 1
 									if(is_domain == 1 and k6 == 'value'):
 										is_domain = 0
 										count_domain = count_domain + 1
