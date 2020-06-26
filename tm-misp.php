@@ -36,12 +36,12 @@ $context = stream_context_create($opts);
 		$tmp2=explode("last_modification_date",$tmp[1]);
 		//vt has 2 format
 		//format 1: tmp2[0] has file name
-		print("<table width=250 style='background: none'><tr><td>");
+		print("");
 		if(preg_match("/meaningful_name/",$tmp2[0])){
 			$tmp3=explode("meaningful_name",$tmp2[0]);
 			$tmp4=explode(",",$tmp3[1]);
 			$meaningful_name=substr($tmp4[0],4,-1);
-			print($meaningful_name."</td><td width=120 nowrap>");
+			print($meaningful_name."===");
 			$tmp5=explode("last_submission_date",$tmp[1]);
 			$reult_line=explode("\n",$tmp5[0]);
 		
@@ -50,7 +50,8 @@ $context = stream_context_create($opts);
 		$name_line=explode("\n",$tmp2[1]);
 		for($i=1;$i<count($name_line)-1;$i++){
 			if(preg_match("/meaningful_name/",$name_line[$i])){
-			print("".substr($name_line[$i],32,-2)."</td><td width=120 nowrap>");
+				$meaningful_name=substr($name_line[$i],32,-2);
+			print($meaningful_name."===");
 			}
 		}
 		//tmp2[0] result
@@ -68,7 +69,7 @@ $context = stream_context_create($opts);
 			}
 		}
 		
-	print("</td></tr></table>");	
+	print("");	
 	
 	}
 	exit;
@@ -98,7 +99,7 @@ $return_all_ds = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/li
 			<div class=wrap-table100>
 				<div class=table100>
 	<table><thead>
-	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1</th><th class=column6>File Name / VirusTotal Result</th></tr></thead><tbody>
+	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1</th><th class=column4>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>
 	<script type='text/javascript'>
 function loadVT(url_1,myDiv)
 {
@@ -115,8 +116,9 @@ xmlhttp.onreadystatechange=function()
   {
   if (xmlhttp.readyState==4)
     {
-    document.getElementById(myDiv).innerHTML=xmlhttp.responseText;
-	
+		tmp=xmlhttp.responseText.split('===');
+    document.getElementById(myDiv).innerHTML=tmp[1];
+	document.getElementById('f_'+myDiv).innerHTML=tmp[0];
     }
   }
 xmlhttp.open('GET','tm-misp.php?url='+url_1+'&div='+myDiv,true);
@@ -180,7 +182,7 @@ $return_all_rule=$return_all_ds;
 					}
 					$vt_link=$name_print;
 
-					print("<tr><td class=column1>$k.</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column6 nowrap><div id=myDiv$k><a href='#' onclick=loadVT('$vt_link','myDiv$k')>View VT</a></div></td></tr>");
+					print("<tr><td class=column1>$k.</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4><div id=f_myDiv$k>&nbsp;</div></td><td class=column6 nowrap><div id=myDiv$k><a href='#' onclick=loadVT('$vt_link','myDiv$k')>View VT</a></div></td></tr>");
 				}
 			}
 		}	
@@ -194,10 +196,10 @@ $return_all_rule=$return_all_ds;
 	
 	for($w=0;$w<count($a);$w++){
 		
-		print("<tr><td class=column1>".($k+$w+1).".</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column6 nowrap><div id=myDiv".($k+$w)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
+		print("<tr><td class=column1>".($k+$w+1).".</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column4><div id=f_myDiv".($k+$w+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($k+$w+1)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
 	}
 
-	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column6>Total: ".($k+$w)."</td></tr>");
+	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column4></td><td class=column6>Total: ".($k+$w)."</td></tr>");
 	print("");
 	print("</body></html>");
 	print("</tbody></table>		</div>

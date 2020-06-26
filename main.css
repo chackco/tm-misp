@@ -206,7 +206,7 @@ tbody tr:hover {
 }
 
 .column4 {
-  width: 110px;
+  width: 350px;
   text-align: right;
 }
 
@@ -264,10 +264,10 @@ tbody tr:hover {
     content: "SHA-1";
   }
   table tbody tr td:nth-child(4):before {
-    content: "Virus Total";
+    content: "File Name";
   }
   table tbody tr td:nth-child(5):before {
-    content: "";
+    content: "Virus Total";
   }
   table tbody tr td:nth-child(6):before {
     content: "";
