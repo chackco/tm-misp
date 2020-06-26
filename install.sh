@@ -3,7 +3,7 @@
 
 # check permission
 if [[ $EUID -ne 0 ]]; then
-   echo "This TM-MISP script must be run as root" 
+   echo "This TM-MISP install script must be run as root" 
    exit 1
 fi
 
