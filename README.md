@@ -15,7 +15,7 @@ We have many people try to solve this problem by created the centralize thing fo
 Trend Micro, as the global leader in cybersecurity, we also has concept of centralize visibility and management using Apex Central, the Apex Central support both automated Virtual Analyzer Suspicious Object (VASO) which receive from Deep Discovery family products (Sandbox) and User-defined Suspicious (UDSO) Object which support third party integration from external source using OpenIOC, STIX, and API automation, We also supported TAXII v1.x and v.2 automated feed management using Deep Discovery Director product. Trend Micro also has Deep Security Enterprise and Cloud One Workload Security product which support Application Control User-defined Suspicious Object (UDSO) using API automation.
 
 ## TM-MISP Project
-TM-MISP project was created to joint Trend Micro CTD with MISP platform which will serve as bridge to synchronize IOC object from MISP to Trend Micro Apex Central (i.e. SHA-1 hash) and Deep Security/Cloud One Workload Security (i.e. SHA256) 
+TM-MISP project was created to joint Trend Micro CTD with MISP platform which will serve as bridge to synchronize IOC object from MISP to Trend Micro Apex Central (i.e. SHA-1 hash, URL, or Domain) and Deep Security/Cloud One Workload Security (i.e. SHA256) 
 
 - Script will connected to MISP platform and gather SHA-1 and submit to Apex Central
 - Script will also gather SHA256 and submit to Deep Security Manager/Cloud One Workload Security
