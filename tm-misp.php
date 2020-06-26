@@ -94,11 +94,11 @@ $return_all_ds = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/li
 	<link rel='stylesheet' type='text/css' href='main.css'>
 	</head><body>
 		<div class=limiter>
-		<div class=container-table100><h1>IOC List from MISP</h1>
+		<div class=container-table100><h1>IOC List from MISP</h1><br>
 			<div class=wrap-table100>
 				<div class=table100>
 	<table><thead>
-	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1</th><th class=column6>Virus total</th></tr></thead><tbody>
+	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1</th><th class=column6>File Name / VirusTotal Result</th></tr></thead><tbody>
 	<script type='text/javascript'>
 function loadVT(url_1,myDiv)
 {
@@ -145,7 +145,7 @@ $a=Array();
 				}
 				if($afield_name === "notes" && preg_match("/MISP/",$afield_value)){
 					$t++;
-					array_push($a,$aname_print);
+					array_push($a,strtolower($aname_print));
 					#print "<p>$t. $aname_print</p>";
 				}
 			}
@@ -194,10 +194,10 @@ $return_all_rule=$return_all_ds;
 	
 	for($w=0;$w<count($a);$w++){
 		
-		print("<tr><td class=column1>$k.</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column6 nowrap><div id=myDiv".($k+$w)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
+		print("<tr><td class=column1>".($k+$w+1).".</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column6 nowrap><div id=myDiv".($k+$w)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
 	}
 
-	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column6>Total: ".($k+$t)."</td></tr>");
+	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column6>Total: ".($k+$w)."</td></tr>");
 	print("");
 	print("</body></html>");
 	print("</tbody></table>		</div>
