@@ -17,8 +17,8 @@ Trend Micro, as the global leader in cybersecurity, we also has concept of centr
 ## TM-MISP Project
 TM-MISP project was created to joint Trend Micro CTD with MISP platform which will serve as bridge to synchronize IOC object from MISP to Trend Micro Apex Central (i.e. SHA-1 hash, URL, or Domain) and Deep Security/Cloud One Workload Security (i.e. SHA256) 
 
-- Script will connected to MISP platform and gather SHA-1 and submit to Apex Central
-- Script will also gather SHA256 and submit to Deep Security Manager/Cloud One Workload Security
+- Script will connected to MISP platform and gather SHA-1, URL, Domain and submit to Apex Central
+- Script will also gather SHA256 and submit to Deep Security Manager/Cloud One Workload Security, for URL and Domain, Deep Security can consume from Apex Central via SPS server
 - Start at v0.1-alpha Start 1 June 2020, 13:18 GMT+7
 - required library https://github.com/MISP/PyMISP
 
