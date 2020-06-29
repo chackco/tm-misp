@@ -5,6 +5,7 @@
 
 
 if(isset($_GET['url']) && (preg_match("/^([a-f0-9]{64})$/", strtolower($_GET['url'])) || preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['url'])))){
+	//case file hash
 include_once("./tmconfig.php");
 	
 	$opts = [
@@ -74,9 +75,107 @@ $context = stream_context_create($opts);
 	}
 	exit;
 	
-}elseif(isset($_GET['url'])
-){
-	print($_GET['url']);
+}elseif(isset($_GET['url']))
+{
+	
+	$valid = (filter_var($_GET['url'], FILTER_VALIDATE_IP) !== false);
+	if($valid){ //case ip
+		include_once("./tmconfig.php");	
+		
+		
+		$vt_link="https://www.virustotal.com/vtapi/v2/ip-address/report?apikey=$vt_api_key&ip=".$_GET['url'];
+	
+	
+	$vt_result=@file_get_contents($vt_link);
+	if($vt_result === false){
+	$error = error_get_last();
+    $error = explode(': ', $error['message']);
+    $error = trim($error[2]);
+	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	exit;
+	}
+	//"detected_downloaded_samples": [{
+	if(preg_match("/\"detected_downloaded_samples\"\: \[\{/",$vt_result)){
+		print("===Seen Bad Sample");
+	}else{
+		print("===Look Good");
+		
+	}
+		exit;
+	}
+	
+	$valid = (filter_var($_GET['url'], FILTER_VALIDATE_URL) !== false);
+	if($valid){ // case URL
+	
+	
+	include_once("./tmconfig.php");	
+		
+		
+		$vt_link="https://www.virustotal.com/vtapi/v2/url/report?apikey=$vt_api_key&resource=".$_GET['url'];
+	//"positives": 2, "total": 80
+	
+	$vt_result=@file_get_contents($vt_link);
+	if($vt_result === false){
+	$error = error_get_last();
+    $error = explode(': ', $error['message']);
+    $error = trim($error[2]);
+	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	exit;
+	}
+	if(preg_match("/Resource does not exist in the dataset/",$vt_result)){
+		print("===N/A");
+		exit;
+	}
+	//print($vt_result);//Resource does not exist in the dataset
+	$tmp=explode("positives",$vt_result);
+	//tmp[1]
+	$tmp2=explode("scans",$tmp[1]);
+	//tmp2[0] ": 1, "total": 79, "
+	$tmp3 = explode(" ",$tmp2[0]);
+	$detected = substr($tmp3[1],0,-1);
+	$total = substr($tmp3[3],0,-1);
+	print("===Detected: ".$detected."/".$total);
+	
+		exit;
+	}
+	
+	$valid = checkdnsrr($_GET['url'] , "A");
+	if($valid){ // case domain
+	
+		
+		include_once("./tmconfig.php");	
+		
+		
+		$vt_link="https://www.virustotal.com/vtapi/v2/domain/report?apikey=$vt_api_key&domain=".$_GET['url'];
+	//"positives": 2, "total": 80
+	
+	$vt_result=@file_get_contents($vt_link);
+	if($vt_result === false){
+	$error = error_get_last();
+    $error = explode(': ', $error['message']);
+    $error = trim($error[2]);
+	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	exit;
+	}
+	
+//	print($vt_result);
+	$tmp=explode("Verdict",$vt_result);
+	//tmp[1]
+	
+	$tmp2=explode(",",$tmp[1]);
+	//print($tmp2[0]);
+	//": "safe"}
+//	$tmp3 = explode(" ",$tmp2[0]);
+	$detected = substr($tmp2[0],4,-1);
+//	$total = substr($tmp3[3],0,-1);
+	print("===Verdict: ".$detected);
+		
+		
+		exit;
+	}
+
+
+	print("===N/A");
 	exit;
 }
 
