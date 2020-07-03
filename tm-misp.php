@@ -4,6 +4,79 @@
 #
 
 
+if(isset($_GET['add']) && isset($_GET['type'])){
+	
+	$mode="";$f_sha1="";
+	//case sha256
+	if(preg_match("/^([a-f0-9]{64})$/", strtolower($_GET['add']))){
+		$mode="file_sha256";
+		
+		$f_sha1=$_GET['sha1'];
+		if(!preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['sha1']))){
+			print("mode=sha256 but sha1 is invalid");
+			exit;
+		}
+	}
+	//case sha1
+	elseif(preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['add']))){
+		$mode="file_sha1";
+		
+	}
+	//case ip
+	elseif(filter_var($_GET['add'], FILTER_VALIDATE_IP) !== false){
+		$mode="ip";
+	
+	}
+	//case url
+	elseif(filter_var($_GET['add'], FILTER_VALIDATE_URL) !== false){
+		$mode="url";
+		
+	}
+	//case domain
+	elseif(checkdnsrr($_GET['add'] , "A")){
+		$mode="domain";
+		
+	}
+	
+	if($mode != $_GET['type']){
+		if($mode ===""){$mode="N/A";}
+			print("mode invalid, $mode, ".$_GET['type']);
+			exit;
+		}
+		if($mode === 'file_sha256'){
+			$mode="file_sha256===".$_GET['sha1'];
+		}
+		print("writing, ");	
+		$file1="/var/www/MISP/PyMISP/examples/sending.txt";
+		$f=@fopen($file1,"a");
+		if(!$f){
+			print("error writing");
+			exit;
+		}
+		fwrite($f,$_GET['add']."===$mode\n");
+		fclose($f);
+		$file2="/var/www/MISP/PyMISP/examples/waiting.txt";
+		if(filesize($file2)){
+		$whole_string = file_get_contents($file2);
+		
+		$entries = explode("\n",$whole_string);
+//		print("waiting count = ".count($entries).", ");
+		$f=@fopen($file2,"w");
+		if(!$f){print("error remove queue");exit;}
+		$c=0;
+		for($i=0;$i<count($entries);$i++){
+			if(preg_match("/".$_GET['add']."===/",$entries[$i])){continue;}
+			if(strlen($entries[$i])==0){continue;}
+			fwrite($f,trim($entries[$i])."\n");
+			$c++;
+		}
+		fclose($f);
+		}
+	print("finish update still left $c IOC to add<hr><a href='tm-misp.php'>Continue</a>");
+exit;
+}
+
+
 if(isset($_GET['url']) && (preg_match("/^([a-f0-9]{64})$/", strtolower($_GET['url'])) || preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['url'])))){
 	//case file hash
 include_once("./tmconfig.php");
@@ -185,21 +258,15 @@ $context = stream_context_create($opts);
 
 
 
-$return_all_apex = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/list_apex_so.txt"));
-$return_all_ds = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/list_ds_so.txt"));
+
+$waiting_list = file_get_contents("/var/www/MISP/PyMISP/examples/waiting.txt");
+$sending_list = file_get_contents("/var/www/MISP/PyMISP/examples/sending.txt");
 
 	print("<html><head><title>TM-MISP Integration Portal</title>
 		<meta charset='UTF-8'>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
 	<link rel='stylesheet' type='text/css' href='main.css'>
-	</head><body>
-		<div class=limiter>
-		<div class=container-table100><h1>IOC List from MISP</h1><br>
-			<div class=wrap-table100>
-				<div class=table100>
-	<table><thead>
-	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column4>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>
-	<script type='text/javascript'>
+	</head><body><script type='text/javascript'>
 function loadVT(url_1,myDiv)
 {
 var xmlhttp;
@@ -224,90 +291,90 @@ xmlhttp.open('GET','tm-misp.php?url='+url_1+'&div='+myDiv,true);
 xmlhttp.send();
 }
 </script>
-
-
-");
-
-$t=0;
-$x=0;
-$a=Array();
-	foreach ($return_all_apex as $apex_key => $apex_value){
-		#print("$apex_key");
-		if(count($apex_value)<2){
-			break;
-		}
-		for ($i=0;$i<count($apex_value);$i++){
-			#print_r($apex_value[$i]);
-			#print("<hr>");
-			
-			foreach($apex_value[$i] as $afield_name => $afield_value){
-				if($afield_name === "content"){
-					$aname_print=$afield_value;
-				}
-				if($afield_name === "notes" && preg_match("/MISP/",$afield_value)){
-					$t++;
-					array_push($a,strtolower($aname_print));
-					#print "<p>$t. $aname_print</p>";
-				}
-			}
-		}	
-	}
-	
-
-
-
-
- 
-
-
-$return_all_rule=$return_all_ds;
-
-
-	$k=0;
-	foreach ($return_all_rule as $globalrule => $array_of_rule){
-		for ($i=0;$i<count($array_of_rule);$i++){
-			foreach($array_of_rule[$i] as $field_name => $field_value){
-				if($field_name === "sha256"){
-					$name_print=$field_value;
-				}
-				if($field_name === "description" && preg_match("/MISP/",$field_value)){
-					$k++;
-					$name_print2="";
-					$tmp=explode("=",$field_value);
-					if(count($tmp)>1){
-						
-						$name_print2 = $tmp[1];
-						$a = array_diff($a, array($tmp[1]));
-					}
-					$vt_link=$name_print;
-
-					print("<tr><td class=column1>$k.</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4><div id=f_myDiv$k>&nbsp;</div></td><td class=column6 nowrap><div id=myDiv$k><a href='#' onclick=loadVT('$vt_link','myDiv$k')>View VT</a></div></td></tr>");
-				}
-			}
-		}	
-	}
-	
-
-
-
-	
-	
-	
-	for($w=0;$w<count($a);$w++){
+		<div class=limiter><div class=container-table100>");
 		
-		print("<tr><td class=column1>".($k+$w+1).".</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column4><div id=f_myDiv".($k+$w+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($k+$w+1)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
-	}
 
-	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column4></td><td class=column6>Total: ".($k+$w)."</td></tr>");
-	print("");
+		//-----------------------------------
+		print("<div class=wrap-table100><h1>MISP IOC Waiting to Add <h3>[ <a href='tm-list.php'>see current Trend Micro IOC</a> ]</h3></h1></div>
+			<div class=wrap-table100>
+				<div class=table100>
+	<table><thead>
+	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column4>Add?</th><th class=column5>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>");
+		$aa=Array();
+		$r=0;
+		$waiting_list=explode("\n",$waiting_list);
+		for($d=0;$d<count($waiting_list)-1;$d++){
+			if(preg_match("/file_sha256/",$waiting_list[$d])){
+				$tmpx=explode("===",trim($waiting_list[$d]));
+				array_push($aa,strtolower($tmpx[2]));
+			}
+			
+		}
+		
+		for($r=0;$r<count($waiting_list)-1;$r++){
+			$test=trim($waiting_list[$r]);
+			if(!strlen($test)){continue;}
+			$txt=explode("===",$test);
+			if($txt[1]==='file_sha256'){
+				$name_print=$txt[0];
+				$name_print2=$txt[2];
+				$txt[1]="file_sha256&sha1=".$txt[2];
+			}else{
+				if($txt[1]==='file_sha1' && in_array(strtolower($txt[0]), $aa)){
+						continue;
+				}
+					$name_print="";
+					$name_print2=$txt[0];
+				
+				
+			}
+		print("<tr><td class=column1>".($r+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4><a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($r+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($r+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($r+1)."')>View VT</a></div></td></tr>");
+		}
+		
+		print("</tbody></table></div></div>");
+		//-----------------------------------------
+				print("<div class=wrap-table100><br><br></div><div class=wrap-table100><h1>MISP Submit to Send to Trend Micro</h1></div>
+			<div class=wrap-table100>
+				<div class=table100>
+	<table><thead>
+	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column5>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>");
+		$aaa=Array();
+		$ra=0;
+		$sending_list=explode("\n",$sending_list);
+		for($d=0;$d<count($sending_list)-1;$d++){
+			if(preg_match("/file_sha256/",$sending_list[$d])){
+				$tmpx=explode("===",trim($sending_list[$d]));
+				array_push($aaa,strtolower($tmpx[2]));
+			}
+			
+		}
+		
+		for($ra=0;$ra<count($sending_list)-1;$ra++){
+			$test=trim($sending_list[$ra]);
+		if(strlen($test)==0){continue;}	
+			$txt=explode("===",$test);
+			if($txt[1]==='file_sha256'){
+				$name_print=$txt[0];
+				$name_print2=$txt[2];
+	
+			}else{
+				if($txt[1]==='file_sha1' && in_array(strtolower($txt[0]), $aaa)){
+						continue;
+				}
+					$name_print="";
+					$name_print2=$txt[0];
+				
+				
+			}
+		print("<tr><td class=column1>".($ra+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column5><div id=f_myDiv".($ra+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($ra+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($ra+1)."')>View VT</a></div></td></tr>");
+		}
+		
+		print("</tbody></table></div></div>");
 	print("</body></html>");
 	print("</tbody></table>		</div>
 			</div>
 		</div>
 	</div>");
-
-
-
 
 
 ?>

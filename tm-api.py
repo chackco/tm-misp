@@ -21,6 +21,11 @@ from tmconfig import CONFIG
 
 cmd = "python3 ./last.py -l " + CONFIG.pymisp_cmd_time 
 
+try:
+    insert_mode = CONFIG.insert_mode
+except AttributeError:
+    insert_mode = "manual"
+
 def create_checksum(http_method, raw_url, headers, request_body):
         string_to_hash = http_method.upper() + '|' + raw_url.lower() + '|' + headers + '|' + request_body
         base64_string = base64.b64encode(hashlib.sha256(str.encode(string_to_hash)).digest()).decode('utf-8')
@@ -114,6 +119,7 @@ count_domain = 0
 count_ip = 0
 h = 0
 count_sha256 = 0
+file1 = open("/var/www/MISP/PyMISP/examples/waiting.txt","a") 
 for returned_value2 in returned_value.splitlines():
 	#print(f"RR {returned_value2}")
 	if(returned_value2.decode('utf-8') != 'No results for that time period'):
@@ -135,7 +141,10 @@ for returned_value2 in returned_value.splitlines():
 							count_ip = count_ip + 1
 							#print(f" {save_sha1_0}")
 							print(f">> ip <-> {val_lv1_attr_v}")
-							submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'ip')
+							if(insert_mode == 'manual'):
+								file1.write(val_lv1_attr_v + "===ip\n") 
+							else:
+								submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'ip')
 						if(val_lv1_attr_v == 'ip-src'):
 							is_ip_0 = 1
 						if(is_domain_0 == 1 and val_lv1_attr_k == 'value'):
@@ -143,7 +152,10 @@ for returned_value2 in returned_value.splitlines():
 							count_domain = count_domain + 1
 							#print(f" {save_sha1_0}")
 							print(f">> domain <-> {val_lv1_attr_v}")
-							submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'domain')
+							if(insert_mode == 'manual'):
+								file1.write(val_lv1_attr_v + "===domain\n") 
+							else:
+								submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'domain')
 						if(val_lv1_attr_v == 'domain'):
 							is_domain_0 = 1
 						if(is_url_0 == 1 and val_lv1_attr_k == 'value'):
@@ -151,7 +163,10 @@ for returned_value2 in returned_value.splitlines():
 							count_url = count_url + 1
 							#print(f" {save_sha1_0}")
 							print(f">> url <-> {val_lv1_attr_v}")
-							submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'url')
+							if(insert_mode == 'manual'):
+								file1.write(val_lv1_attr_v + "===url\n") 
+							else:
+								submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'url')
 						if(val_lv1_attr_v == 'url'):
 							is_url_0 = 1
 						if(is_sha1_0 == 1 and val_lv1_attr_k == 'value'):
@@ -160,7 +175,10 @@ for returned_value2 in returned_value.splitlines():
 							save_sha1_0 = val_lv1_attr_v
 							#print(f" {save_sha1_0}")
 							print(f">> sha1 <-> {val_lv1_attr_v}")
-							submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'file_sha1')
+							if(insert_mode == 'manual'):
+								file1.write(val_lv1_attr_v + "===file_sha1\n") 
+							else:
+								submit_so_to_apex(val_lv1_attr_v, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'file_sha1')
 						if(val_lv1_attr_v == 'sha1' or val_lv1_attr_v == '|sha1'):
 							is_sha1_0 = 1
 							#save_sha1_0 = ''
@@ -168,7 +186,10 @@ for returned_value2 in returned_value.splitlines():
 							is_sha256_0 = 0
 							count_sha256 = count_sha256 + 1
 							print(f">> sha256 <-> {val_lv1_attr_v}, {save_sha1_0}")
-							submit_so_to_ds(val_lv1_attr_v, CONFIG.ds_url_base, CONFIG.ds_api_key,save_sha1_0)
+							if(insert_mode == 'manual'):
+								file1.write(val_lv1_attr_v + "===file_sha256===" + save_sha1_0 + "\n") 
+							else:
+								submit_so_to_ds(val_lv1_attr_v, CONFIG.ds_url_base, CONFIG.ds_api_key,save_sha1_0)
 							save_sha1_0 = ''
 						if(val_lv1_attr_v == 'sha256' or val_lv1_attr_v == '|sha256'):
 							is_sha256_0 = 1
@@ -192,21 +213,30 @@ for returned_value2 in returned_value.splitlines():
 										is_ip = 0
 										count_ip = count_ip + 1
 										print(f">> ip <-> {v6}")
-										submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'ip')
+										if(insert_mode == 'manual'):
+											file1.write(v6 + "===ip\n") 
+										else:
+											submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'ip')
 									if(v6 == 'ip-src'):
 										is_ip = 1
 									if(is_domain == 1 and k6 == 'value'):
 										is_domain = 0
 										count_domain = count_domain + 1
 										print(f">> domain <-> {v6}")
-										submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'domain')
+										if(insert_mode == 'manual'):
+											file1.write(v6 + "===domain\n") 
+										else:
+											submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'domain')
 									if(v6 == 'domain'):
 										is_domain = 1
 									if(is_url == 1 and k6 == 'value'):
 										is_url = 0
 										count_url = count_url + 1
 										print(f">> url <-> {v6}")
-										submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'url')
+										if(insert_mode == 'manual'):
+											file1.write(v6 + "===url\n") 
+										else:
+											submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'url')
 									if(v6 == 'url'):
 										is_url = 1
 									if(is_sha1 == 1 and k6 == 'value'):
@@ -214,7 +244,10 @@ for returned_value2 in returned_value.splitlines():
 										count_sha1 = count_sha1 + 1
 										print(f">> sha1 <-> {v6}")
 										save_sha1 = v6
-										submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'file_sha1')
+										if(insert_mode == 'manual'):
+											file1.write(v6 + "===file_sha1\n") 
+										else:
+											submit_so_to_apex(v6, CONFIG.use_url_base, CONFIG.use_application_id, CONFIG.use_api_key, CONFIG.use_action, 'file_sha1')
 									if(v6 == 'sha1' or v6 == '|sha1'):
 										is_sha1 = 1
 										#save_sha1 = ''
@@ -222,14 +255,17 @@ for returned_value2 in returned_value.splitlines():
 										is_sha256 = 0
 										count_sha256 = count_sha256 + 1
 										print(f">> sha256 <-> {v6}, {save_sha1}")
-										submit_so_to_ds(v6, CONFIG.ds_url_base, CONFIG.ds_api_key, save_sha1)
+										if(insert_mode == 'manual'):
+											file1.write(v6 + "===file_sha256===" + save_sha1 + "\n") 
+										else:
+											submit_so_to_ds(v6, CONFIG.ds_url_base, CONFIG.ds_api_key, save_sha1)
 										save_sha1=''
 									if(v6 == 'sha256' or v6 == '|sha256'):
 										is_sha256 = 1
 print(f"---- found url = {count_url}, domain = {count_domain}, sha1 = {count_sha1}, sha256 = {count_sha256}")
 
 print('-------- [ END RUN ] ------------\n')
-
+file1.close()
 
 #--------------------------
 

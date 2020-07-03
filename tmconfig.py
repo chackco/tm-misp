@@ -4,6 +4,8 @@
 class CONFIG:
 	pymisp_cmd_time = "1h"  # query PyMISP in time windows last 1 hour
 	
+	#insert_mode = "manual"
+	
 	# config for Apex Central integration
 	use_url_base = 'https://8.8.8.8' 
 	use_application_id = '7BB7B7E5-0000-1111-B9AE-7DD7E05941D6'
