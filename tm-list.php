@@ -1,8 +1,13 @@
 <?php
 
+$file_apex="/var/www/MISP/PyMISP/examples/list_apex_so.txt";
+$file_ds="/var/www/MISP/PyMISP/examples/list_ds_so.txt";
+$return_all_apex = json_decode(file_get_contents($file_apex));
+$return_all_ds = json_decode(file_get_contents($file_ds));
 
-$return_all_apex = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/list_apex_so.txt"));
-$return_all_ds = json_decode(file_get_contents("/var/www/MISP/PyMISP/examples/list_ds_so.txt"));
+ $show = "<br>APEX IOC list was last modified: " . date ("F d Y H:i:s.", filemtime($file_apex)+18000)."<br>";
+	$show .= "Deep Security IOC list was last modified: " . date ("F d Y H:i:s.", filemtime($file_ds)+18000)."<br>";
+
 
 	print("<html><head><title>TM-MISP Integration Portal</title>
 		<meta charset='UTF-8'>
@@ -35,7 +40,7 @@ xmlhttp.send();
 </script>
 		<div class=limiter><div class=container-table100>");
 	//--------------------------------
-print("		<div class=wrap-table100><br><br></div><div class=wrap-table100><h1>IOC List from MISP in Trend Micro <h3>[ <a href='tm-misp.php'>see MISP Waiting List IOC</a> ]</h3></h1></div>
+print("		<div class=wrap-table100><br><br></div><div class=wrap-table100><h1>IOC List from MISP in Trend Micro <h3>[ <a href='tm-misp.php'>see MISP Waiting List IOC</a> ]$show</h3></h1></div>
 			<div class=wrap-table100>
 				<div class=table100>
 	<table><thead>

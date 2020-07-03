@@ -3,7 +3,8 @@
 # TM-MISP web UI script for display IOC from Apex central and DSM
 #
 
-
+	$file1="/var/www/MISP/PyMISP/examples/sending.txt";
+	$file2="/var/www/MISP/PyMISP/examples/waiting.txt";
 if(isset($_GET['add']) && isset($_GET['type'])){
 	
 	$mode="";$f_sha1="";
@@ -47,7 +48,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 			$mode="file_sha256===".$_GET['sha1'];
 		}
 		print("writing, ");	
-		$file1="/var/www/MISP/PyMISP/examples/sending.txt";
+	
 		$f=@fopen($file1,"a");
 		if(!$f){
 			print("error writing");
@@ -55,7 +56,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 		}
 		fwrite($f,$_GET['add']."===$mode\n");
 		fclose($f);
-		$file2="/var/www/MISP/PyMISP/examples/waiting.txt";
+		
 		if(filesize($file2)){
 		$whole_string = file_get_contents($file2);
 		
@@ -293,9 +294,13 @@ xmlhttp.send();
 </script>
 		<div class=limiter><div class=container-table100>");
 		
+		
+    $show = "<br>MISP IOC waiting queue was last modified: " . date ("F d Y H:i:s.", filemtime($file1)+18000)."<br>";
+	$show .= "MISP submit queue was last modified: " . date ("F d Y H:i:s.", filemtime($file2)+18000)."<br>";
+
 
 		//-----------------------------------
-		print("<div class=wrap-table100><h1>MISP IOC Waiting to Add <h3>[ <a href='tm-list.php'>see current Trend Micro IOC</a> ]</h3></h1></div>
+		print("<div class=wrap-table100><h1>MISP IOC Waiting to Add <h3>[ <a href='tm-list.php'>see current Trend Micro IOC</a> ]$show</h3></h1></div>
 			<div class=wrap-table100>
 				<div class=table100>
 	<table><thead>
