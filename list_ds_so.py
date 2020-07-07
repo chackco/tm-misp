@@ -11,7 +11,8 @@ import json
 import urllib.parse
 from tmconfig import CONFIG
 
-
+if(CONFIG.ds_url_base == ''):
+	exit()
 
 
 url_ds = CONFIG.ds_url_base + '/api/applicationcontrolglobalrules'

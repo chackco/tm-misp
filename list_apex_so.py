@@ -11,6 +11,8 @@ import json
 import urllib.parse
 from tmconfig import CONFIG
 
+if(CONFIG.use_url_base == ''):
+	exit()
 
 def create_checksum(http_method, raw_url, headers, request_body):
     string_to_hash = http_method.upper() + '|' + raw_url.lower() + '|' + headers + '|' + request_body
