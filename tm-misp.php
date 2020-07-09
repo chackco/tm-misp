@@ -315,7 +315,7 @@ xmlhttp.send();
 			}
 			
 		}
-		
+		$rr=0;
 		for($r=0;$r<count($waiting_list)-1;$r++){
 			$test=trim($waiting_list[$r]);
 			if(!strlen($test)){continue;}
@@ -333,7 +333,9 @@ xmlhttp.send();
 				
 				
 			}
-		print("<tr><td class=column1>".($r+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4><a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($r+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($r+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($r+1)."')>View VT</a></div></td></tr>");
+			
+		print("<tr><td class=column1>".($rr+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4><a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($rr+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($rr+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($rr+1)."')>View VT</a></div></td></tr>");
+		$rr++;
 		}
 		
 		print("</tbody></table></div></div>");
