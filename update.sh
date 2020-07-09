@@ -19,7 +19,7 @@ curl https://raw.githubusercontent.com/chackco/tm-misp/master/list_ds_so.py --ou
 chown www-data:www-data list_ds_so.py
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/tm-misp.php --output /var/www/MISP/app/webroot/tm-misp.php
 chown www-data:www-data /var/www/MISP/app/webroot/tm-misp.php
-curl https://raw.githubusercontent.com/chackco/tm-misp/master/tm-misp.php --output /var/www/MISP/app/webroot/tm-list.php
+curl https://raw.githubusercontent.com/chackco/tm-misp/master/tm-list.php --output /var/www/MISP/app/webroot/tm-list.php
 chown www-data:www-data /var/www/MISP/app/webroot/tm-list.php
 curl https://raw.githubusercontent.com/chackco/tm-misp/master/main.css --output /var/www/MISP/app/webroot/main.css
 chown www-data:www-data /var/www/MISP/app/webroot/main.css
