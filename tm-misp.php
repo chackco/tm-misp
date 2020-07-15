@@ -1,7 +1,35 @@
 <?php
 
-# TM-MISP web UI script for display IOC from Apex central and DSM
+# TM-MISP web UI script for display IOC waiting list to submit to Apex central and DSM
 #
+include_once("./tmconfig.php");
+$ddd="";
+if(isset($ddd_url)){
+	$arrContextOptions=array(
+    "ssl"=>array(
+        "verify_peer"=>false,
+        "verify_peer_name"=>false,
+    ),
+); 
+	$ddd=file_get_contents($ddd_url,false, stream_context_create($arrContextOptions));
+	
+	$ddd=explode("\n",$ddd);
+	$cc=count($ddd);
+	$ddd_a=Array();
+	for($q=1;$q<$cc;$q++){
+		$added=trim($ddd[$q]);
+		if($added === "define category DDD_cnc_blacklists"){continue;}
+		if($added === "define category DDD_wrs_blacklists"){continue;}
+		if($added === "end") {continue;}
+		if($added === "") {continue;}
+		$added = trim(substr($added,1,-1));
+		array_push($ddd_a,$added);
+		
+	}
+	print("Trend Micro DDD IOC count = $cc");
+	
+	
+}
 
 	$file1="/var/www/MISP/PyMISP/examples/sending.txt";
 	$file2="/var/www/MISP/PyMISP/examples/waiting.txt";
@@ -80,7 +108,7 @@ exit;
 
 if(isset($_GET['url']) && (preg_match("/^([a-f0-9]{64})$/", strtolower($_GET['url'])) || preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['url'])))){
 	//case file hash
-include_once("./tmconfig.php");
+
 	
 	$opts = [
     "http" => [
@@ -154,7 +182,7 @@ $context = stream_context_create($opts);
 	
 	$valid = (filter_var($_GET['url'], FILTER_VALIDATE_IP) !== false);
 	if($valid){ //case ip
-		include_once("./tmconfig.php");	
+			
 		
 		
 		$vt_link="https://www.virustotal.com/vtapi/v2/ip-address/report?apikey=$vt_api_key&ip=".$_GET['url'];
@@ -182,7 +210,7 @@ $context = stream_context_create($opts);
 	if($valid){ // case URL
 	
 	
-	include_once("./tmconfig.php");	
+		
 		
 		
 		$vt_link="https://www.virustotal.com/vtapi/v2/url/report?apikey=$vt_api_key&resource=".$_GET['url'];
@@ -217,7 +245,7 @@ $context = stream_context_create($opts);
 	if($valid){ // case domain
 	
 		
-		include_once("./tmconfig.php");	
+			
 		
 		
 		$vt_link="https://www.virustotal.com/vtapi/v2/domain/report?apikey=$vt_api_key&domain=".$_GET['url'];
@@ -304,7 +332,7 @@ xmlhttp.send();
 			<div class=wrap-table100>
 				<div class=table100>
 	<table><thead>
-	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column4>Add?</th><th class=column5>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>");
+	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column4>DDD/Add?</th><th class=column5>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>");
 		$aa=Array();
 		$r=0;
 		$waiting_list=explode("\n",$waiting_list);
@@ -333,8 +361,12 @@ xmlhttp.send();
 				
 				
 			}
+			$ddd_yes = "No";
+			if(in_array($name_print,$ddd_a) || in_array($name_print2,$ddd_a)){
+				$ddd_yes = "Yes";
+			}
 			
-		print("<tr><td class=column1>".($rr+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4><a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($rr+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($rr+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($rr+1)."')>View VT</a></div></td></tr>");
+		print("<tr><td class=column1>".($rr+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4>$ddd_yes / <a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($rr+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($rr+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($rr+1)."')>View VT</a></div></td></tr>");
 		$rr++;
 		}
 		

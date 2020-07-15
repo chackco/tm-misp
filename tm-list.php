@@ -1,5 +1,7 @@
 <?php
 
+# TM-LIST web UI script for display IOC from Apex central and DSM
+
 $file_apex="/var/www/MISP/PyMISP/examples/list_apex_so.txt";
 $file_ds="/var/www/MISP/PyMISP/examples/list_ds_so.txt";
 $return_all_apex = json_decode(file_get_contents($file_apex));
