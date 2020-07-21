@@ -41,7 +41,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 		$mode="file_sha256";
 		
 		$f_sha1=$_GET['sha1'];
-		if(!preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['sha1']))){
+		if(strlen($f_sha1)>0 && !preg_match('/^[0-9a-f]{40}$/i', strtolower($_GET['sha1']))){
 			print("mode=sha256 but sha1 is invalid");
 			exit;
 		}
