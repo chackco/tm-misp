@@ -101,6 +101,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 		}
 		fclose($f);
 		}
+		header("location: tm-misp.php#end");
 	print("finish update still left $c IOC to add<hr><a href='tm-misp.php'>Continue</a>");
 exit;
 }
@@ -127,7 +128,7 @@ $context = stream_context_create($opts);
 	$error = error_get_last();
     $error = explode(': ', $error['message']);
     $error = trim($error[2]);
-	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	print("<a href='#!' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
 	exit;
 	}
 	if(preg_match("/error/",$vt_result)){
@@ -193,7 +194,7 @@ $context = stream_context_create($opts);
 	$error = error_get_last();
     $error = explode(': ', $error['message']);
     $error = trim($error[2]);
-	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	print("<a href='#!' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
 	exit;
 	}
 	//"detected_downloaded_samples": [{
@@ -221,7 +222,7 @@ $context = stream_context_create($opts);
 	$error = error_get_last();
     $error = explode(': ', $error['message']);
     $error = trim($error[2]);
-	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	print("<a href='#!' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
 	exit;
 	}
 	if(preg_match("/Resource does not exist in the dataset/",$vt_result)){
@@ -256,7 +257,7 @@ $context = stream_context_create($opts);
 	$error = error_get_last();
     $error = explode(': ', $error['message']);
     $error = trim($error[2]);
-	print("<a href='#' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
+	print("<a href='#!' onclick=loadVT('".$_GET['url']."','".$_GET['div']."')>Try again</a>");
 	exit;
 	}
 	
@@ -366,7 +367,7 @@ xmlhttp.send();
 				$ddd_yes = "Yes";
 			}
 			
-		print("<tr><td class=column1>".($rr+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4>$ddd_yes / <a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($rr+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($rr+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($rr+1)."')>View VT</a></div></td></tr>");
+		print("<tr><td class=column1>".($rr+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column4>$ddd_yes / <a href='tm-misp.php?add=$txt[0]&type=$txt[1]'>Add</a></td><td class=column5><div id=f_myDiv".($rr+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($rr+1)."><a href='#!' onclick=loadVT('$txt[0]','myDiv".($rr+1)."')>View VT</a></div></td></tr>");
 		$rr++;
 		}
 		
@@ -405,15 +406,15 @@ xmlhttp.send();
 				
 				
 			}
-		print("<tr><td class=column1>".($ra+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column5><div id=f_myDiv".($ra+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($ra+1)."><a href='#' onclick=loadVT('$txt[0]','myDiv".($ra+1)."')>View VT</a></div></td></tr>");
+		print("<tr><td class=column1>".($ra+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column5><div id=f_myDiv".($ra+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($ra+1)."><a href='#!' onclick=loadVT('$txt[0]','myDiv".($ra+1)."')>View VT</a></div></td></tr>");
 		}
 		
-		print("</tbody></table></div></div>");
-	print("</body></html>");
+		
+
 	print("</tbody></table>		</div>
 			</div>
 		</div>
 	</div>");
-
+	print("<a name=end></a></body></html>");
 
 ?>
