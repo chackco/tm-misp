@@ -94,7 +94,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 		if(!$f){print("error remove queue");exit;}
 		$c=0;
 		for($i=0;$i<count($entries);$i++){
-			if(preg_match("/".$_GET['add']."===/",$entries[$i])){continue;}
+			if(preg_match("@".$_GET['add']."===@i",$entries[$i])){continue;}
 			if(strlen($entries[$i])==0){continue;}
 			fwrite($f,trim($entries[$i])."\n");
 			$c++;
