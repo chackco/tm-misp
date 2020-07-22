@@ -55,9 +55,9 @@ print("		<div class=wrap-table100><br><br></div><div class=wrap-table100><h1>IOC
 $t=0;
 $x=0;
 $a=Array();
-if(strlen($return_all_apex)){
+if(is_object($return_all_apex)){
 	foreach ($return_all_apex as $apex_key => $apex_value){
-		#print("$apex_key");
+		
 		if(count($apex_value)<2){
 			break;
 		}
@@ -117,8 +117,8 @@ $return_all_rule=$return_all_ds;
 
 
 	
-	
-	
+	$a = array_merge($a);
+	#print_r($a);
 	for($w=0;$w<count($a);$w++){
 		
 		print("<tr><td class=column1>".($k+$w+1).".</td><td class=column2></td><td class=column3>$a[$w]</td><td class=column4><div id=f_myDiv".($k+$w+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($k+$w+1)."><a href='#' onclick=loadVT('$a[$w]','myDiv".($k+$w+1)."')>View VT</a></div></td></tr>");
@@ -126,13 +126,13 @@ $return_all_rule=$return_all_ds;
 
 	print("<tr><td class=column1>&gt;&gt;&gt;</td><td class=column2>Deep Security IOC: $k</td><td class=column3>Apex Central IOC: $t</td><td class=column4></td><td class=column6>Total: ".($k+$w)."</td></tr>");
 	print("");
-	print("</body></html>");
+
 	print("</tbody></table>		</div>
 			</div>
 		</div>
 	</div>");
 
-
+	print("</body></html>");
 
 
 ?>
