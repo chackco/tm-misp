@@ -62,7 +62,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 		
 	}
 	//case domain
-	elseif(checkdnsrr($_GET['add'] , "A")){
+	elseif(is_valid_domain_name($_GET['add'] )){
 		$mode="domain";
 		
 	}
@@ -242,7 +242,7 @@ $context = stream_context_create($opts);
 		exit;
 	}
 	
-	$valid = checkdnsrr($_GET['url'] , "A");
+	$valid = is_valid_domain_name($_GET['url']);
 	if($valid){ // case domain
 	
 		
@@ -416,5 +416,12 @@ xmlhttp.send();
 		</div>
 	</div>");
 	print("<a name=end></a></body></html>");
+
+function is_valid_domain_name($domain_name)
+{
+    return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain_name) //valid chars check
+            && preg_match("/^.{1,253}$/", $domain_name) //overall length check
+            && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain_name)   ); //length of each label
+}
 
 ?>
