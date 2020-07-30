@@ -4,6 +4,8 @@
 #
 include_once("./tmconfig.php");
 $ddd="";
+
+if(!isset($_GET['url'])){
 if(isset($ddd_url)){
 	$arrContextOptions=array(
     "ssl"=>array(
@@ -30,9 +32,13 @@ if(isset($ddd_url)){
 	
 	
 }
+}
 
 	$file1="/var/www/MISP/PyMISP/examples/sending.txt";
 	$file2="/var/www/MISP/PyMISP/examples/waiting.txt";
+	
+
+	
 if(isset($_GET['add']) && isset($_GET['type'])){
 	
 	$mode="";$f_sha1="";
@@ -79,7 +85,7 @@ if(isset($_GET['add']) && isset($_GET['type'])){
 	
 		$f=@fopen($file1,"a");
 		if(!$f){
-			print("error writing");
+			print("error writing append file1");
 			exit;
 		}
 		fwrite($f,$_GET['add']."===$mode\n");
@@ -290,6 +296,37 @@ $context = stream_context_create($opts);
 
 
 $waiting_list = file_get_contents("/var/www/MISP/PyMISP/examples/waiting.txt");
+
+		$aa=Array();
+		$r=0;
+		$waiting_list=explode("\n",$waiting_list);
+		$count_waiting_list=count($waiting_list);
+
+if(isset($_GET['action']) && $_GET['action']==='add_all'){
+		$f=@fopen($file1,"a");
+		if(!$f){
+			print("error writing file1");
+			exit;
+		}
+	for($run_add=0;$run_add<$count_waiting_list-1;$run_add++){
+		
+	
+		fwrite($f,$waiting_list[$run_add]."\n");
+		
+		
+	}
+	fclose($f);
+	$f=@fopen($file2,"w");
+			if(!$f){
+			print("error writing file2");
+			exit;
+		}
+	fclose($f);
+	header("Location: tm-misp.php#end");
+	exit;
+}
+
+
 $sending_list = file_get_contents("/var/www/MISP/PyMISP/examples/sending.txt");
 
 	print("<html><head><title>TM-MISP Integration Portal</title>
@@ -327,6 +364,10 @@ xmlhttp.send();
     $show = "<br>MISP IOC waiting queue was last modified: " . date ("F d Y H:i:s.", filemtime($file1)+18000)."<br>";
 	$show .= "MISP submit queue was last modified: " . date ("F d Y H:i:s.", filemtime($file2)+18000)."<br>";
 
+		if($count_waiting_list>1){
+			
+	$show .= "You can add all waiting list in single click: [<a href='tm-misp.php?action=add_all'>Add All Waiting List</a> ]<br>";		
+		}
 
 		//-----------------------------------
 		print("<div class=wrap-table100><h1>MISP IOC Waiting to Add <h3>[ <a href='tm-list.php'>see current Trend Micro IOC</a> ]$show</h3></h1></div>
@@ -334,10 +375,8 @@ xmlhttp.send();
 				<div class=table100>
 	<table><thead>
 	<tr class=table100-head><th class=column1>#</th><th class=column2>SHA256</th><th class=column3>SHA-1 / URL / Domain / IP</th><th class=column4>DDD/Add?</th><th class=column5>FileName</th><th class=column6>VirusTotal </th></tr></thead><tbody>");
-		$aa=Array();
-		$r=0;
-		$waiting_list=explode("\n",$waiting_list);
-		for($d=0;$d<count($waiting_list)-1;$d++){
+
+		for($d=0;$d<$count_waiting_list-1;$d++){
 			if(preg_match("/file_sha256/",$waiting_list[$d])){
 				$tmpx=explode("===",trim($waiting_list[$d]));
 				array_push($aa,strtolower($tmpx[2]));
@@ -345,7 +384,7 @@ xmlhttp.send();
 			
 		}
 		$rr=0;
-		for($r=0;$r<count($waiting_list)-1;$r++){
+		for($r=0;$r<$count_waiting_list-1;$r++){
 			$test=trim($waiting_list[$r]);
 			if(!strlen($test)){continue;}
 			$txt=explode("===",$test);
@@ -388,7 +427,7 @@ xmlhttp.send();
 			}
 			
 		}
-		
+		$raa=0;
 		for($ra=0;$ra<count($sending_list)-1;$ra++){
 			$test=trim($sending_list[$ra]);
 		if(strlen($test)==0){continue;}	
@@ -406,7 +445,8 @@ xmlhttp.send();
 				
 				
 			}
-		print("<tr><td class=column1>".($ra+1).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column5><div id=f_myDiv".($ra+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($ra+1)."><a href='#!' onclick=loadVT('$txt[0]','myDiv".($ra+1)."')>View VT</a></div></td></tr>");
+			$raa++;
+		print("<tr><td class=column1>".($raa).".</td><td class=column2>$name_print</td><td class=column3>$name_print2</td><td class=column5><div id=f_myDiv".($raa+$rr+1).">&nbsp;</div></td><td class=column6 nowrap><div id=myDiv".($raa+$rr+1)."><a href='#!' onclick=loadVT('$txt[0]','myDiv".($raa+$rr+1)."')>View VT</a></div></td></tr>");
 		}
 		
 		
