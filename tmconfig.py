@@ -5,7 +5,7 @@ class CONFIG:
 	pymisp_cmd_time = "1h"  # query PyMISP in time windows last 1 hour
 	
 	#insert_mode = "manual"
-	#insert_only_tm must be use with manual mode
+	#insert_only_tm must be use with manual mode, this must be use with MISP custom tag TM-MISP
 	insert_only_tm = "true" 
 	
 	# config for Apex Central integration
