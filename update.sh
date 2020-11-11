@@ -7,6 +7,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+echo "Download and Update TM-MISP latest version" 
 
 if [ "$#" -ne 1 ]; then
 # normal
