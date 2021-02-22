@@ -8,6 +8,10 @@ class CONFIG:
 	#insert_only_tm must be use with manual mode, this must be use with MISP custom tag TM-MISP
 	insert_only_tm = "true" 
 	
+	# config for Deep Discovery Director
+	
+	ddd_url = 'https://10.0.0.100'
+	
 	# config for Apex Central integration
 	use_url_base = 'https://8.8.8.8' 
 	use_application_id = '7BB7B7E5-0000-1111-B9AE-7DD7E05941D6'
