@@ -1,4 +1,6 @@
 # Beyond Endpoint Detection and Response using TM-MISP
+## About
+[Due to Trend Micro release official MISP integration, this project will decide to sustain mode]
 ### Written by Nathaphon K.
 
 Nowadays, we are in the connected world, and the Threat landscape are evolving, we are targeted by automated hacking tools from hackers such as Exploit tool kit, Virus, Trojan, Ransomware, Keylogger etc. They have been a long history among the time. The clever one was creating the tool that can do polymorphic itself to evade from the detection engine like Antivirus, Sandbox. Then, in this new era, the security expert also need the advanced analysis and automation tool.
